@@ -1,0 +1,168 @@
+<!DOCTYPE html><html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>শেইপ অটো-ডিটেকশন (৩ বা ৪ বাহু)</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f0f8ff;
+      max-width: 700px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    input, select {
+      padding: 8px;
+      width: 100%;
+      margin-top: 4px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 4px;
+      margin-top: 15px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result, .error {
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+    .result {
+      background-color: #e0ffe0;
+      color: #006400;
+    }
+    .error {
+      background-color: #ffe0e0;
+      color: #900000;
+    }
+    .section {
+      border: 2px solid #ccc;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>শেইপ স্বয়ংক্রিয় শনাক্তকরণ</h2>
+  <p><strong>১. নিচে দুটি ক্যাটাগরি থেকে যেকোনো একটিতে মান দিন:</strong></p>  <!-- ক্যাটাগরি ১: ৪ বাহু -->  <div class="section">
+    <h3>ক) ৪ বাহুর শেইপ নির্ধারণ</h3>
+    <label>বাহু A (নিচের দৈর্ঘ্য):</label>
+    <input type="number" id="qa"><label>বাহু B (বাম পাশ):</label>
+<input type="number" id="qb">
+
+<label>বাহু C (উপরের দৈর্ঘ্য):</label>
+<input type="number" id="qc">
+
+<label>বাহু D (ডান পাশ):</label>
+<input type="number" id="qd">
+
+<label>প্রথম কোণ (ডিগ্রি):</label>
+<input type="number" id="qangle1">
+
+<label>দ্বিতীয় কোণ (ডিগ্রি):</label>
+<input type="number" id="qangle2">
+
+  </div>  <!-- ক্যাটাগরি ২: ৩ বাহু -->  <div class="section">
+    <h3>খ) ৩ বাহুর শেইপ নির্ধারণ</h3>
+    <label>বাহু A:</label>
+    <input type="number" id="ta"><label>বাহু B:</label>
+<input type="number" id="tb">
+
+<label>বাহু C:</label>
+<input type="number" id="tc">
+
+<label>যেকোনো কোণ (ঐচ্ছিক):</label>
+<input type="number" id="tangle">
+
+  </div><button onclick="detectShape()">শেইপ চিহ্নিত করুন</button>
+
+  <div id="resultBox" class="result" style="display:none;"></div>
+  <div id="errorBox" class="error" style="display:none;"></div>  <script>
+    function detectShape() {
+      const qa = parseFloat(document.getElementById('qa').value);
+      const qb = parseFloat(document.getElementById('qb').value);
+      const qc = parseFloat(document.getElementById('qc').value);
+      const qd = parseFloat(document.getElementById('qd').value);
+      const qangle1 = parseFloat(document.getElementById('qangle1').value);
+      const qangle2 = parseFloat(document.getElementById('qangle2').value);
+
+      const ta = parseFloat(document.getElementById('ta').value);
+      const tb = parseFloat(document.getElementById('tb').value);
+      const tc = parseFloat(document.getElementById('tc').value);
+      const tangle = parseFloat(document.getElementById('tangle').value);
+
+      const resultBox = document.getElementById('resultBox');
+      const errorBox = document.getElementById('errorBox');
+      resultBox.style.display = 'none';
+      errorBox.style.display = 'none';
+
+      // ৪ বাহুর যাচাই
+      if (!isNaN(qa) && !isNaN(qb) && !isNaN(qc) && !isNaN(qd)) {
+        const allEqual = qa === qb && qb === qc && qc === qd;
+        const oppEqual = qa === qc && qb === qd;
+        const allRight = qangle1 === 90 && qangle2 === 90;
+
+        if (allEqual && allRight) {
+          resultBox.textContent = `শেইপ: বর্গ`;
+        } else if (oppEqual && allRight) {
+          resultBox.textContent = `শেইপ: আয়তক্ষেত্র`;
+        } else if (allEqual) {
+          resultBox.textContent = `শেইপ: রম্বস`;
+        } else if (oppEqual) {
+          resultBox.textContent = `শেইপ: সামান্তরিক`;
+        } else {
+          resultBox.textContent = `শেইপ: ট্রাপিজিয়াম বা অজানা চতুর্ভুজ`;
+        }
+        resultBox.style.display = 'block';
+        return;
+      }
+
+      // ৩ বাহুর যাচাই
+      if (!isNaN(ta) && !isNaN(tb) && !isNaN(tc)) {
+        if (ta <= 0 || tb <= 0 || tc <= 0) {
+          errorBox.textContent = "ত্রিভুজের সব বাহু শূন্যের চেয়ে বড় হতে হবে।";
+          errorBox.style.display = 'block';
+          return;
+        }
+        if (ta + tb <= tc || tb + tc <= ta || ta + tc <= tb) {
+          errorBox.textContent = "ত্রিভুজ গঠন সম্ভব নয়।";
+          errorBox.style.display = 'block';
+          return;
+        }
+
+        let type = "বিচিত্র ত্রিভুজ";
+        if (ta === tb && tb === tc) type = "সমবাহু ত্রিভুজ";
+        else if (ta === tb || tb === tc || ta === tc) type = "সমদ্বিবাহু ত্রিভুজ";
+
+        let angleType = "";
+        if (!isNaN(tangle)) {
+          if (tangle === 90) angleType = " — সমকোণী";
+          else if (tangle < 90) angleType = " — সূক্ষকোণী";
+          else if (tangle > 90) angleType = " — স্থূলকোণী";
+        }
+
+        resultBox.textContent = `শেইপ: ${type}${angleType}`;
+        resultBox.style.display = 'block';
+        return;
+      }
+
+      errorBox.textContent = "অনুগ্রহ করে ৩ বা ৪টি বাহুর মান প্রদান করুন।";
+      errorBox.style.display = 'block';
+    }
+  </script></body>
+</html>
