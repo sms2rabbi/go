@@ -1,0 +1,314 @@
+/* হেডার বেসিক স্টাইল */
+header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #2c3e50;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 1000;
+  font-family: 'Segoe UI', sans-serif;
+  border-bottom: 1px solid #666;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* হেডারের ভিতরের কন্টেইনার */
+.header-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  box-sizing: border-box;
+}
+
+/* মেনু সেকশন (বাম ও ডান) */
+.menu-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* হ্যামবার্গার আইকন বাম ও ডানে */
+.menu-icon-left,
+.menu-icon-right {
+  cursor: pointer;
+  position: relative;
+}
+
+/* বাম আইকন স্টাইল (পুরানো মতো) */
+.menu-icon-left {
+  width: 25px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-icon-left span {
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background-color: #007BFF;
+  transition: background-color 0.3s ease;
+}
+
+.menu-icon-left:hover span {
+  background-color: #ff5722;
+}
+
+/* ডানের আইকন ডট (৩টি ছোট গোলাকার) */
+.menu-icon-right {
+  width: 6px;           /* ডটগুলোর container width */
+  height: 20px;         /* উঁচু জুড়ে থাকবে */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.menu-icon-right span {
+  width: 6px;
+  height: 6px;
+  background-color: #28a745;
+  border-radius: 50%;
+  display: block;
+  transition: background-color 0.3s ease;
+}
+
+.menu-icon-right:hover span {
+  background-color: #ff5722;
+}
+
+/* ড্রপডাউন মেনু */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  color: #333;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  border-radius: 4px;
+  display: none;
+  flex-direction: column;
+  min-width: 120px;
+  padding: 5px 0;
+  z-index: 1001;
+}
+
+/* ড্রপডাউন লিঙ্ক গুলো */
+.dropdown a {
+  padding: 8px 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown a:hover {
+  background-color: #007BFF;
+  color: white;
+}
+
+/* হ্যামবার্গার আইকন স্প্যান এলিমেন্ট */
+.menu-icon-left span:nth-child(1),
+.menu-icon-left span:nth-child(2),
+.menu-icon-left span:nth-child(3),
+.menu-icon-right span:nth-child(1),
+.menu-icon-right span:nth-child(2),
+.menu-icon-right span:nth-child(3) {
+  content: "";
+  display: block;
+}
+
+
+
+
+
+
+/* মধ্যবর্তী মেনু */
+.menu-center {
+  display: flex;
+  gap: 25px;
+  font-weight:0;
+}
+
+.menu-center button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.menu-center button:hover {
+  background-color: #007BFF;
+}
+
+
+/*⛔⛔⛔*/
+.menu-center a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  display: inline-block;
+}
+
+.menu-center a:hover {
+  background-color: #007BFF;
+}
+
+/* ড্রপডাউন দেখানোর জন্য ক্লাস */
+.menu-section.show-dropdown .dropdown {
+  display: flex;
+}
+
+.menu-section.menu-left .dropdown {
+  left: 0;
+  right: auto;
+}
+
+.menu-section.menu-right .dropdown {
+  right: 0;
+  left: auto;
+}
+
+
+
+@media (max-width: 768px) {
+  .header-inner {
+    max-width: 100%;
+    padding: 10px 15px;
+    justify-content: space-between;
+    /* flex-wrap: nowrap;  এটা না দিলে এলিমেন্ট লাইন থেকে নিচে নেমে যেতে পারে */
+  }
+
+  .menu-section.menu-center {
+    gap: 15px; /* একটু কম গ্যাপ দিলে ভালো হয় */
+  }
+
+  .menu-center button,
+  .menu-center a {
+    font-size: 14px;
+    padding: 5px 10px;
+  }
+
+  /* হ্যামবার্গার আইকনের সাইজ অপরিবর্তিত রাখা হয়েছে */
+  .menu-icon-left {
+    width: 25px;
+    height: 20px;
+  }
+
+  .menu-icon-right {
+    width: 6px;
+    height: 20px;
+  }
+
+  /* হেডার টেক্সট বা অন্য কোনো এলিমেন্ট থাকলে তার ফন্ট সাইজ বা মার্জিন সামঞ্জস্য করতে পারো */
+}
+
+
+
+
+
+/*⛔⛔⛔⛔⛔⛔⛔⛔⛔⛔⛔⛔*/
+/*⛔⛔⛔⛔ নীচে ফুটার⛔⛔⛔⛔*/
+/*⛔⛔⛔⛔⛔⛔⛔⛔⛔⛔⛔⛔*/
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100px;
+  
+  background-color: #2c3e50;
+  color: #ccc;
+  border-top: 1px solid #444;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: center;
+  
+  flex-wrap: wrap;
+  
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.footer-section {
+  text-align: center;
+  flex: 1 1 auto;
+  min-width: 150px; /* ছোট স্ক্রিনে খুব ছোট না হয় */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section ul li {
+  margin: 8px 0;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #f8f9fa;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #0056b3;
+}
+
+.footer-copyright {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ccc;
+  text-align: center;
+  border-top: 1px solid #444;
+  padding-top: 10px;
+  box-sizing: border-box;
+}
+
+
+
+@media (max-width: 768px) {
+  .footer-inner {
+    display: flex;
+    flex-wrap: nowrap; /* nowrap, কিন্তু স্ক্রল না দিতে চাইলে পরেরটা নেমবে */
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 100%;
+    overflow-x: hidden; /* স্ক্রল বন্ধ */
+    
+  }
+  
+  
+  .footer-section {
+    flex: 1 1 0; /* সামঞ্জস্যপূর্ণ প্রস্থ */
+    min-width: 0; /* min-width সরিয়ে দিলাম */
+    text-align: center;
+    padding-right: 20px; 
+    
+    
+    box-sizing: border-box; /* এটা খুব গুরুত্বপূর্ণ */
+    
+}
+ 

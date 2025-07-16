@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ভূমি পরিমাপ ক্যালকুলেটর</title>
+  <link rel="stylesheet" href="land.css">
+  <link rel="stylesheet" href="header.css">
+  
+</head>
+<body>
+  
+  <!--- ⛔⛔⛔ হেডার ⛔⛔⛔ --->
+    <header>
+  <div class="header-inner">
+    <!-- Left Menu -->
+    <div class="menu-section menu-left">
+      <div class="menu-icon-left">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="dropdown">
+        <a href="#">A</a>
+        <a href="#">B</a>
+        <a href="#">C</a>
+        <a href="#">D</a>
+        <a href="#">E</a>
+      </div>
+    </div>
+
+    <!-- Center Menu -->
+    <div class="menu-center">
+  <a href="about.html">Shape</a>
+  <a href="land-map.html">Map</a>
+  <button type="button" class="refresh-btn">Refresh</button>
+</div>
+
+    <!-- Right Menu -->
+    <div class="menu-section menu-right">
+      <div class="menu-icon-right">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="dropdown">
+        <a href="#">A</a>
+        <a href="#">B</a>
+        <a href="#">C</a>
+        <a href="#">D</a>
+        <a href="#">E</a>
+      </div>
+    </div>
+  </div>
+</header>
+  <!--- ⛔⛔⛔ হেডার ⛔⛔⛔ --->
+  
+  
+  
+  
+ <div class="container">
+  <h2>ভূমি পরিমাপ ক্যালকুলেটর</h2>
+
+  <div class="form-group">
+    <label for="shape">জমির ধরন নির্বাচন করুন:</label>
+    <select id="shape">
+      <option value="rectangle">আয়তক্ষেত্র</option>
+      <option value="square">বর্গ</option>
+      <option value="parallelogram">সমান্তরিক</option>
+      <option value="rhombus">রম্বস</option>
+      <option value="trapezium">ট্রাপিজিয়াম</option>
+      <option value="quadrilateral">সাধারণ চতুর্ভুজ</option>
+      <option value="triangle">ত্রিভুজ (যেকোনো ধরন)</option>
+      <option value="rightTriangle">সমকোণী ত্রিভুজ</option>
+      <option value="circle">বৃত্ত</option>
+    </select>
+  </div>
+
+  <div id="error"></div>
+
+  <div id="inputs" class="form-group">
+    <!-- ডাইনামিক ইনপুট এখানে আসবে -->
+  </div>
+
+  <div class="form-group">
+  <button class="calculate-btn" onclick="calculate()">হিসাব করুন</button>
+</div>
+
+  <div class="output" id="results" style="display:none">
+    <h3>ফলাফল:</h3>
+    <p id="area"></p>
+    <p id="shotok"></p>
+    <p id="katha"></p>
+    <p id="bigha"></p>
+    <p id="acre"></p>
+    <p id="hypotenuse"></p>
+  </div>
+</div>
+
+  
+  
+  
+  
+  
+   <!---⛔⛔⛔--->
+  <footer class="footer">
+  <div class="footer-inner">
+
+    <!-- ১ম ভাগ -->
+    <div class="footer-section">
+      <ul>
+        <li><a href="learn.html">Learn</a></li>
+        <li><a href="rules.html">Ruls</a></li>
+        <li><a href="scale.html">Scale</a></li>
+      </ul>
+    </div>
+
+    <!-- ২য় ভাগ -->
+    <div class="footer-section">
+      <ul>
+        <li><a href="shortcut.html">Shortcut</a></li>
+        <li><a href="formula.html">Formula</a></li>
+        <li><a href="top.html">Top</a></li>
+      </ul>
+    </div>
+
+    <!-- ৩য় ভাগ -->
+    <div class="footer-section">
+      <ul>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="other.html">Other</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- ✅ কপিরাইট -->
+  <div class="footer-copyright">
+    &copy; 2025 Alim. All rights reserved.
+  </div>
+</footer>
+  <!---⛔⛔⛔--->
+  
+  
+  <script src="land.js"></script> 
+</body>
+</html>
