@@ -201,29 +201,23 @@ h2, h3 {
     max-width: 100%; /* পুরো স্ক্রীনে আসবে */
   }
 }
-   
     
-    
-    
-  
-  </style>
+</style>
 </head>
 <body>
   
     <div class="home-button-wrapper">
-  <a href="index.html" class="home-button">🏠 Home</a>
-</div>
-  
-  
-  <div id="errorBox" class="top-error" style="display:none;"></div>
+    <a href="index.html" class="home-button">🏠 Home</a>
+    </div>
 
-<h2>শেইপ স্বয়ংক্রিয় শনাক্তকরণ</h2>
+    <div id="errorBox" class="top-error" style="display:none;"></div>
+
+    <h2>শেইপ স্বয়ংক্রিয় শনাক্তকরণ</h2>
     
     
     <div class="cmn">
-        <p><strong style="color:green; text-align:center; font-size:18px;"> নিচে 'ক' ও 'খ' ২টি সেকশন রয়েছে। <br>৪ বাহুর জন্য ক) এবং ৩বাহুর জন্য খ) ব্যবহার করুন।</strong></p>   
+    <p><strong style="color:green; text-align:center; font-size:18px;"> নিচে 'ক' ও 'খ' ২টি সেকশন রয়েছে। <br>৪ বাহুর জন্য ক) এবং ৩বাহুর জন্য খ) ব্যবহার করুন।</strong></p>   
     <p><strong style="color:purple;"> প্রত্যেকটি বাহুর মান দিন। কোণের মান দিলে প্রকৃত শেইপ বের হবে। তবে সমস্যা নেই, প্রকৃত শেইপ এবং অপ্রকৃত শেইপ উভয়েরর ফলাফল সেইম বের হবে। তাই এখানে কোণের মান ছাড়াও শুধুই বাহুর মান ব্যবহার করিলেও অসুবিধা নেই। তবে কোণের মান জানা থাকলে দিন, তাতে প্রকৃত শেইপ পাবেন। </strong></p>
-
     </div>
     
     
@@ -240,9 +234,9 @@ h2, h3 {
   <input type="number" id="qc">
   <label>বাহু D (ডান পাশ):</label>
   <input type="number" id="qd">
-  <label>প্রথম কোণ (ডিগ্রি):</label>
+  <label>প্রথম কোণθ (ডিগ্রি°):</label>
   <input type="number" id="qangle1">
-  <label>দ্বিতীয় কোণ (ডিগ্রি):</label>
+  <label>দ্বিতীয় কোণθ (ডিগ্রি°):</label>
   <input type="number" id="qangle2">
 </div>
 
@@ -255,24 +249,21 @@ h2, h3 {
   <input type="number" id="tb">
   <label>বাহু C:</label>
   <input type="number" id="tc">
-  <label>যেকোনো কোণ (ঐচ্ছিক):</label>
+  <label>যেকোনো কোণθ (ডিগ্রি°):</label>
   <input type="number" id="tangle">
 </div>
-
-
     
-    <button id="detectButton" class="detect-btn" onclick="detectShape()">শেইপ চিহ্নিত করুন</button>
+<button id="detectButton" class="detect-btn" onclick="detectShape()">শেইপ চিহ্নিত করুন</button>
     
 <!-- ব্যাকগ্রাউন্ড ওভারলে -->
 <div id="overlay" class="overlay" style="display:none;"></div>
 
-<!-- রেজাল্ট বক্স -->
+  <!-- রেজাল্ট বক্স -->
 <div id="resultBox" class="result-popup" style="display:none;"></div>
   
   
  <script>
-
-    function detectShape() {
+  function detectShape() {
   const qa = parseFloat(document.getElementById('qa').value);
   const qb = parseFloat(document.getElementById('qb').value);
   const qc = parseFloat(document.getElementById('qc').value);
@@ -286,13 +277,9 @@ h2, h3 {
   const tangle = parseFloat(document.getElementById('tangle').value);
 
   const errorBox = document.getElementById('errorBox');
-  errorBox.style.display = 'none';
-
+  errorBox.style.display = 'none';     
         
-        
-        
-   //⛔⛔ শো রেজাল্ট বক্স নীচে     
-        
+  //⛔⛔ শো রেজাল্ট বক্স নীচে           
   function showResultBox(message) {
   const overlay = document.getElementById('overlay');
   const resultBox = document.getElementById('resultBox');
@@ -335,14 +322,7 @@ function showError(message) {
   }
 
   document.addEventListener('touchstart', dismissHandler);
-}
-
-        
-        
-        
-        
-        
-        
+}      
         
   const qInputs = [qa, qb, qc, qd];
   const qValid = qInputs.every(val => !isNaN(val) && val > 0);
@@ -408,11 +388,7 @@ function showError(message) {
   }
 
   showError("🚫 অনুগ্রহ করে প্রত্যেকটি বাহুর মান বসান");
-}
-
-    
-    
-    
+}    
     
 // Intersection Observer for sticky button
 document.addEventListener('DOMContentLoaded', function () {
@@ -424,7 +400,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (entry.isIntersecting) {
         btn.classList.add('fixed');
       }
-      // else অংশ বাদ দেওয়া হয়েছে, যাতে নিচে গেলে ক্লাস না সরে
+      
     });
   }, { threshold: 0.8 });
 
@@ -439,15 +415,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 500);
   });
 });
+   
     
-    
-    
-    
-    
-    
-    //⛔⛔⛔⛔ নিচে ভ্যালু রিফ্রেশ কোড
-    
-    document.addEventListener('DOMContentLoaded', function () {
+  //⛔⛔⛔⛔ নিচে ভ্যালু রিফ্রেশ কোড    
+  document.addEventListener('DOMContentLoaded', function () {
   const qa = document.getElementById('qa');
   const qb = document.getElementById('qb');
   const qc = document.getElementById('qc');
@@ -476,12 +447,7 @@ document.addEventListener('DOMContentLoaded', function () {
       triInputs.forEach(t => t.value = '');
     });
   });
-});
-
-    
-</script>
-    
-    
-    
+});    
+</script>   
 </body>
 </html>
