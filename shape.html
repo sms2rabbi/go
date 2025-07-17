@@ -119,30 +119,39 @@ h2, h3 {
   position: sticky;
   bottom: 0;
   margin: 10px auto;
-  display: block;
+  display: flex;                  
+  justify-content: center;       
+  align-items: center;           
   background-color: #007bff;
   color: white;
-  padding: 6px 30px;
   font-size: 18px;
+  font-weight: bold;
+  font-family: 'Noto Sans Bengali', sans-serif;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: bottom 0.4s ease, top 0.4s ease;
   width: 180px;
-  height: 36px;
-  line-height: 24px;
-}
-
-.detect-btn.fixed {
+  height: 44px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0;                    
+  }
+  
+ .detect-btn.fixed {
   position: fixed;
   bottom: 15px;
   left: 0;
   right: 0;
   margin: auto;
   width: 180px;
-  height: 36px;
+  height: 44px;
   text-align: center;
   z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .detect-btn.fixed.scroll-up {
