@@ -1,168 +1,628 @@
-<!DOCTYPE html><html lang="bn">
+<!DOCTYPE html>
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>শেইপ অটো-ডিটেকশন (৩ বা ৪ বাহু)</title>
   <style>
-    body {
+  
+  
+  body {
       font-family: sans-serif;
-      padding: 20px;
+      padding: 0;
       background: #f0f8ff;
       max-width: 700px;
       margin: auto;
+      text-align: center;
+      overflow-y: scroll;
     }
+
     label {
       display: block;
       margin-top: 12px;
       font-weight: bold;
+      text-align: left;
+      margin-left: 5%;
     }
+
     input, select {
-      padding: 8px;
-      width: 100%;
-      margin-top: 4px;
-      margin-bottom: 10px;
-      font-size: 16px;
+      padding: 12px;
+      width: 90%;
+      margin: 4px auto 10px;
+      font-size: 18px;
+      box-sizing: border-box;
+      display: block;
     }
+
     button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       background-color: #007bff;
       color: white;
       border: none;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 18px;
       border-radius: 4px;
       margin-top: 15px;
     }
+
     button:hover {
       background-color: #0056b3;
     }
+
     .result, .error {
-      margin-top: 20px;
+      margin: 20px auto 0;
       padding: 14px;
       border-radius: 6px;
       font-size: 16px;
+      width: 90%;
+      text-align: center;
     }
+
     .result {
       background-color: #e0ffe0;
       color: #006400;
     }
+
     .error {
       background-color: #ffe0e0;
       color: #900000;
     }
+
     .section {
       border: 2px solid #ccc;
       padding: 16px;
       border-radius: 8px;
-      margin-bottom: 20px;
+      margin: 20px auto;
+      width: 95%;
+      box-sizing: border-box;
+      text-align: left;
     }
+
+    h2, h3 {
+      text-align: center;
+    }
+
+    .top-error {
+      position: fixed;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(10, 80, 180, 0.3);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+        
+      color:#D32F2F;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 40px;
+      font-weight: bold;
+      z-index: 9999;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+  
+   /* ব্যাকগ্রাউন্ড ব্লার/ডার্ক */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* হালকা ডার্ক ট্রান্সপারেন্ট */
+  backdrop-filter: blur(3px); /* ব্যাকগ্রাউন্ড ব্লার */
+  z-index: 9998;
+}
+
+
+    
+    
+    .detect-btn {
+  position: sticky;
+  bottom: 0;
+  margin: 10px auto;
+  display: block;
+  background-color: #007bff;
+  color: white;
+  padding: 6px 30px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: bottom 0.4s ease, top 0.4s ease; /* শুধু bottom আর top smooth হবে */
+  width: 180px;
+  height: 36px;
+  line-height: 24px;
+}
+
+.detect-btn.fixed {
+  position: fixed;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 180px;
+  height: 36px;
+  text-align: center;
+  z-index: 999;
+  /* top: unset; bottom: 15px; এটাই ডিফল্ট */
+}
+
+.detect-btn.fixed.scroll-up {
+  top: 15px;
+  bottom: auto;
+}
+    
+
+    
+    
+    
+    
+    
+/* রেজাল্ট বক্স স্ক্রিনের মাঝে */
+.result-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #e0ffe0;
+  color: #006400;
+  padding: 20px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  z-index: 9999;
+}
+  
+  
+    
+    
+.bahu {
+    color: green ;
+}  
+    
+  
+    
+    .home-button-wrapper {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.home-button {
+  display: inline-block;
+  background-color:#007bff; /* বেগুনি */
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.home-button:hover {
+  background-color: #a64ca6; /* হোভার করলে হালকা বেগুনি */
+}
+    
+    
+.cmn {
+   padding-left: 20px;
+   padding-right: 20px;
+}   
+    
+    
+  /*⛔⛔রেসপন্সিভ⛔⛔*/  
+    @media (max-width: 480px) {
+  body {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  label {
+    margin-left: 3%;
+    font-size: 14px;
+  }
+
+  input, select {
+    width: 95%;
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 10px 18px;
+  }
+
+  .result, .error {
+    width: 95%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .section {
+    width: 98%;
+    padding: 12px;
+    margin: 15px auto;
+  }
+
+  .top-error {
+    font-size: 28px;
+    padding: 10px 18px;
+    top: 30px;
+  }
+
+  .detect-btn {
+    width: 150px;
+    height: 32px;
+    padding: 6px 20px;
+    font-size: 14px;
+    margin: 8px auto;
+  }
+
+  .result-popup {
+    font-size: 16px;
+    padding: 16px 24px;
+    width: 90%;
+  }
+
+  .home-button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .cmn {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 700px) {
+  body {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+
+  label {
+    margin-left: 4%;
+    font-size: 16px;
+  }
+
+  input, select {
+    width: 90%;
+    font-size: 17px;
+    padding: 11px;
+  }
+
+  button {
+    font-size: 17px;
+    padding: 11px 22px;
+  }
+
+  .result, .error {
+    width: 90%;
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  .section {
+    width: 95%;
+    padding: 14px;
+    margin: 18px auto;
+  }
+
+  .top-error {
+    font-size: 35px;
+    padding: 11px 22px;
+    top: 40px;
+  }
+
+  .detect-btn {
+    width: 170px;
+    height: 34px;
+    padding: 6px 25px;
+    font-size: 15px;
+    margin: 9px auto;
+  }
+
+  .result-popup {
+    font-size: 17px;
+    padding: 18px 26px;
+    width: 95%;
+  }
+
+  .home-button {
+    font-size: 15px;
+    padding: 9px 18px;
+  }
+
+  .cmn {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+    
+    
+    
+    
+  
   </style>
 </head>
 <body>
-  <h2>শেইপ স্বয়ংক্রিয় শনাক্তকরণ</h2>
-  <p><strong>১. নিচে দুটি ক্যাটাগরি থেকে যেকোনো একটিতে মান দিন:</strong></p>  <!-- ক্যাটাগরি ১: ৪ বাহু -->  <div class="section">
-    <h3>ক) ৪ বাহুর শেইপ নির্ধারণ</h3>
-    <label>বাহু A (নিচের দৈর্ঘ্য):</label>
-    <input type="number" id="qa"><label>বাহু B (বাম পাশ):</label>
-<input type="number" id="qb">
+  
+    <div class="home-button-wrapper">
+  <a href="index.html" class="home-button">🏠 Home</a>
+</div>
+  
+  
+  <div id="errorBox" class="top-error" style="display:none;"></div>
 
-<label>বাহু C (উপরের দৈর্ঘ্য):</label>
-<input type="number" id="qc">
+<h2>শেইপ স্বয়ংক্রিয় শনাক্তকরণ</h2>
+    
+    
+    <div class="cmn">
+        <p><strong style="color:purple; text-align:center; font-size:18px;"> নিচে 'ক' ও 'খ' ২টি সেকশন রয়েছে। <br>৪ বাহুর জন্য ক) এবং ৩বাহুর জন্য খ) ব্যবহার করুন।</strong></p>   
+    <p><strong style="color:indigo;"> প্রত্যেকটি বাহুর মান দিন। কোণের মান দিলে প্রকৃত শেইপ বের হবে। তবে সমস্যা নেই, প্রকৃত শেইপ এবং অপ্রকৃত শেইপ উভয়েরর ফলাফল সেইম বের হবে। তাই এখানে কোণের মান ছাড়াও শুধুই বাহুর মান ব্যবহার করিলেও অসুবিধা নেই। তবে কোণের মান জানা থাকলে দিন, তাতে প্রকৃত শেইপ পাবেন। </strong></p>
 
-<label>বাহু D (ডান পাশ):</label>
-<input type="number" id="qd">
+    </div>
+    
+    
+    
+    
+<!-- ক্যাটাগরি ১: ৪ বাহু -->
+<div class="section">
+  <h3 class="bahu">ক) ৪ বাহুর শেইপ নির্ধারণ করুন।</h3>
+  <label>বাহু A (নিচের দৈর্ঘ্য):</label>
+  <input type="number" id="qa">
+  <label>বাহু B (বাম পাশ):</label>
+  <input type="number" id="qb">
+  <label>বাহু C (উপরের দৈর্ঘ্য):</label>
+  <input type="number" id="qc">
+  <label>বাহু D (ডান পাশ):</label>
+  <input type="number" id="qd">
+  <label>প্রথম কোণ (ডিগ্রি):</label>
+  <input type="number" id="qangle1">
+  <label>দ্বিতীয় কোণ (ডিগ্রি):</label>
+  <input type="number" id="qangle2">
+</div>
 
-<label>প্রথম কোণ (ডিগ্রি):</label>
-<input type="number" id="qangle1">
+<!-- ক্যাটাগরি ২: ৩ বাহু -->
+<div class="section">
+  <h3 class="bahu">খ) ৩ বাহুর শেইপ নির্ধারণ করুন।</h3>
+  <label>বাহু A:</label>
+  <input type="number" id="ta">
+  <label>বাহু B:</label>
+  <input type="number" id="tb">
+  <label>বাহু C:</label>
+  <input type="number" id="tc">
+  <label>যেকোনো কোণ (ঐচ্ছিক):</label>
+  <input type="number" id="tangle">
+</div>
 
-<label>দ্বিতীয় কোণ (ডিগ্রি):</label>
-<input type="number" id="qangle2">
 
-  </div>  <!-- ক্যাটাগরি ২: ৩ বাহু -->  <div class="section">
-    <h3>খ) ৩ বাহুর শেইপ নির্ধারণ</h3>
-    <label>বাহু A:</label>
-    <input type="number" id="ta"><label>বাহু B:</label>
-<input type="number" id="tb">
+    
+    <button id="detectButton" class="detect-btn" onclick="detectShape()">শেইপ চিহ্নিত করুন</button>
+    
+<!-- ব্যাকগ্রাউন্ড ওভারলে -->
+<div id="overlay" class="overlay" style="display:none;"></div>
 
-<label>বাহু C:</label>
-<input type="number" id="tc">
+<!-- রেজাল্ট বক্স -->
+<div id="resultBox" class="result-popup" style="display:none;"></div>
+  
+  
+ <script>
 
-<label>যেকোনো কোণ (ঐচ্ছিক):</label>
-<input type="number" id="tangle">
-
-  </div><button onclick="detectShape()">শেইপ চিহ্নিত করুন</button>
-
-  <div id="resultBox" class="result" style="display:none;"></div>
-  <div id="errorBox" class="error" style="display:none;"></div>  <script>
     function detectShape() {
-      const qa = parseFloat(document.getElementById('qa').value);
-      const qb = parseFloat(document.getElementById('qb').value);
-      const qc = parseFloat(document.getElementById('qc').value);
-      const qd = parseFloat(document.getElementById('qd').value);
-      const qangle1 = parseFloat(document.getElementById('qangle1').value);
-      const qangle2 = parseFloat(document.getElementById('qangle2').value);
+  const qa = parseFloat(document.getElementById('qa').value);
+  const qb = parseFloat(document.getElementById('qb').value);
+  const qc = parseFloat(document.getElementById('qc').value);
+  const qd = parseFloat(document.getElementById('qd').value);
+  const qangle1 = parseFloat(document.getElementById('qangle1').value);
+  const qangle2 = parseFloat(document.getElementById('qangle2').value);
 
-      const ta = parseFloat(document.getElementById('ta').value);
-      const tb = parseFloat(document.getElementById('tb').value);
-      const tc = parseFloat(document.getElementById('tc').value);
-      const tangle = parseFloat(document.getElementById('tangle').value);
+  const ta = parseFloat(document.getElementById('ta').value);
+  const tb = parseFloat(document.getElementById('tb').value);
+  const tc = parseFloat(document.getElementById('tc').value);
+  const tangle = parseFloat(document.getElementById('tangle').value);
 
-      const resultBox = document.getElementById('resultBox');
-      const errorBox = document.getElementById('errorBox');
-      resultBox.style.display = 'none';
-      errorBox.style.display = 'none';
+  const errorBox = document.getElementById('errorBox');
+  errorBox.style.display = 'none';
 
-      // ৪ বাহুর যাচাই
-      if (!isNaN(qa) && !isNaN(qb) && !isNaN(qc) && !isNaN(qd)) {
-        const allEqual = qa === qb && qb === qc && qc === qd;
-        const oppEqual = qa === qc && qb === qd;
-        const allRight = qangle1 === 90 && qangle2 === 90;
+        
+        
+        
+   //⛔⛔ শো রেজাল্ট বক্স নীচে     
+        
+  function showResultBox(message) {
+  const overlay = document.getElementById('overlay');
+  const resultBox = document.getElementById('resultBox');
+  resultBox.textContent = message;
+  overlay.style.display = 'block';
+  resultBox.style.display = 'block';
 
-        if (allEqual && allRight) {
-          resultBox.textContent = `শেইপ: বর্গ`;
-        } else if (oppEqual && allRight) {
-          resultBox.textContent = `শেইপ: আয়তক্ষেত্র`;
-        } else if (allEqual) {
-          resultBox.textContent = `শেইপ: রম্বস`;
-        } else if (oppEqual) {
-          resultBox.textContent = `শেইপ: সামান্তরিক`;
-        } else {
-          resultBox.textContent = `শেইপ: ট্রাপিজিয়াম বা অজানা চতুর্ভুজ`;
-        }
-        resultBox.style.display = 'block';
-        return;
-      }
+  // টাইমআউট
+  const timeout = setTimeout(() => {
+    overlay.style.display = 'none';
+    resultBox.style.display = 'none';
+    document.removeEventListener('touchstart', dismissHandler);
+  }, 5000);
 
-      // ৩ বাহুর যাচাই
-      if (!isNaN(ta) && !isNaN(tb) && !isNaN(tc)) {
-        if (ta <= 0 || tb <= 0 || tc <= 0) {
-          errorBox.textContent = "ত্রিভুজের সব বাহু শূন্যের চেয়ে বড় হতে হবে।";
-          errorBox.style.display = 'block';
-          return;
-        }
-        if (ta + tb <= tc || tb + tc <= ta || ta + tc <= tb) {
-          errorBox.textContent = "ত্রিভুজ গঠন সম্ভব নয়।";
-          errorBox.style.display = 'block';
-          return;
-        }
+  // টাচ করলে ডিসমিস করবে
+  function dismissHandler() {
+    clearTimeout(timeout); // আগে থেকে সেট টাইমআউট ক্লিয়ার
+    overlay.style.display = 'none';
+    resultBox.style.display = 'none';
+    document.removeEventListener('touchstart', dismissHandler); // একবারেই কাজ শেষ
+  }
 
-        let type = "বিচিত্র ত্রিভুজ";
-        if (ta === tb && tb === tc) type = "সমবাহু ত্রিভুজ";
-        else if (ta === tb || tb === tc || ta === tc) type = "সমদ্বিবাহু ত্রিভুজ";
+  document.addEventListener('touchstart', dismissHandler);
+}
 
-        let angleType = "";
-        if (!isNaN(tangle)) {
-          if (tangle === 90) angleType = " — সমকোণী";
-          else if (tangle < 90) angleType = " — সূক্ষকোণী";
-          else if (tangle > 90) angleType = " — স্থূলকোণী";
-        }
+function showError(message) {
+  const errorBox = document.getElementById('errorBox');
+  errorBox.textContent = message;
+  errorBox.style.display = 'block';
 
-        resultBox.textContent = `শেইপ: ${type}${angleType}`;
-        resultBox.style.display = 'block';
-        return;
-      }
+  const timeout = setTimeout(() => {
+    errorBox.style.display = 'none';
+    document.removeEventListener('touchstart', dismissHandler);
+  }, 5000);
 
-      errorBox.textContent = "অনুগ্রহ করে ৩ বা ৪টি বাহুর মান প্রদান করুন।";
-      errorBox.style.display = 'block';
+  function dismissHandler() {
+    clearTimeout(timeout);
+    errorBox.style.display = 'none';
+    document.removeEventListener('touchstart', dismissHandler);
+  }
+
+  document.addEventListener('touchstart', dismissHandler);
+}
+
+        
+        
+        
+        
+        
+        
+        
+  const qInputs = [qa, qb, qc, qd];
+  const qValid = qInputs.every(val => !isNaN(val) && val > 0);
+
+  if (qInputs.some(val => !isNaN(val))) {
+    if (!qValid) {
+      showError("দয়া করে ৪ বাহুর সবগুলোই মান দিন। কোণের মান দিলে প্রকৃত শেপ পাওয়া যাবে।");
+      return;
     }
-  </script></body>
+
+    const allEqual = qa === qb && qb === qc && qc === qd;
+    const oppEqual = qa === qc && qb === qd;
+    const onePairEqual = (qa === qc && qb !== qd) || (qb === qd && qa !== qc);
+    const angle90 = val => !isNaN(val) && val === 90;
+    const bothRight = angle90(qangle1) && angle90(qangle2);
+
+    let shape = "সাধারণ চতুর্ভুজ";
+
+    if (allEqual && bothRight) {
+      shape = "বর্গ";
+    } else if (allEqual) {
+      shape = "রম্বস";
+    } else if (oppEqual && bothRight) {
+      shape = "আয়তক্ষেত্র";
+    } else if (oppEqual) {
+      shape = "সামান্তরিক";
+    } else if (onePairEqual) {
+      shape = "ট্রাপিজিয়াম";
+    }
+
+    showResultBox(`শেইপ: ${shape}`);
+    return;
+  }
+
+  // ৩ বাহুর জন্য ত্রিভুজ
+  const tInputs = [ta, tb, tc];
+  const tValid = tInputs.every(val => !isNaN(val) && val > 0);
+
+  if (tInputs.some(val => !isNaN(val))) {
+    if (!tValid) {
+      showError("অনুগ্রহ করে ৩ বাহুর সবগুলোই মান দিন। কোণের মান দিলে প্রকৃত শেপ পাওয়া যাবে।");
+      return;
+    }
+
+    if (ta + tb <= tc || tb + tc <= ta || ta + tc <= tb) {
+      showError("দুঃখিত:❗ত্রিভুজ গঠন সম্ভব নয়। কারণ যেকোনো দুই বাহুর যোগফল অপর বাহুর চেয়ে বড় হতে হবে, তবেই সেটি ত্রিভুজ হবে।");
+      return;
+    }
+
+    let type = "অসমবাহু ত্রিভুজ";
+    if (ta === tb && tb === tc) type = "সমবাহু ত্রিভুজ";
+    else if (ta === tb || tb === tc || ta === tc) type = "সমদ্বিবাহু ত্রিভুজ";
+
+    let angleType = "";
+    if (!isNaN(tangle)) {
+      if (tangle === 90) angleType = " — সমকোণী";
+      else if (tangle < 90) angleType = " — সূক্ষকোণী";
+      else if (tangle > 90) angleType = " — স্থূলকোণী";
+    }
+
+    showResultBox(`শেইপ: ${type}${angleType}`);
+    return;
+  }
+
+  showError("🚫 অনুগ্রহ করে সব গুলো ঘরে মান বসান");
+}
+
+    
+    
+    
+    
+// Intersection Observer for sticky button
+document.addEventListener('DOMContentLoaded', function () {
+  const btn = document.getElementById('detectButton');
+  const sectionK = document.querySelectorAll('.section')[1];
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        btn.classList.add('fixed');
+      }
+      // else অংশ বাদ দেওয়া হয়েছে, যাতে নিচে গেলে ক্লাস না সরে
+    });
+  }, { threshold: 0.8 });
+
+  observer.observe(sectionK);
+
+  // স্ক্রল থামলে ২ সেকেন্ড পর ক্লাস সরানো
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      btn.classList.remove('fixed');
+    }, 500);
+  });
+});
+    
+    
+    
+    
+    
+    
+    //⛔⛔⛔⛔ নিচে ভ্যালু রিফ্রেশ কোড
+    
+    document.addEventListener('DOMContentLoaded', function () {
+  const qa = document.getElementById('qa');
+  const qb = document.getElementById('qb');
+  const qc = document.getElementById('qc');
+  const qd = document.getElementById('qd');
+  const qangle1 = document.getElementById('qangle1');
+  const qangle2 = document.getElementById('qangle2');
+
+  const ta = document.getElementById('ta');
+  const tb = document.getElementById('tb');
+  const tc = document.getElementById('tc');
+  const tangle = document.getElementById('tangle');
+
+  const quadInputs = [qa, qb, qc, qd, qangle1, qangle2];
+  const triInputs = [ta, tb, tc, tangle];
+
+  // ৩ বাহুর কোনো ঘরে টাইপ করলে ৪ বাহুর ইনপুট মুছে ফেলবে
+  triInputs.forEach(input => {
+    input.addEventListener('input', () => {
+      quadInputs.forEach(q => q.value = '');
+    });
+  });
+
+  // ৪ বাহুর কোনো ঘরে টাইপ করলে ৩ বাহুর ইনপুট মুছে ফেলবে
+  quadInputs.forEach(input => {
+    input.addEventListener('input', () => {
+      triInputs.forEach(t => t.value = '');
+    });
+  });
+});
+
+    
+</script>
+    
+    
+    
+</body>
 </html>
