@@ -6,117 +6,114 @@
   <title>শেইপ অটো-ডিটেকশন (৩ বা ৪ বাহু)</title>
   <style>
   
-  
-  body {
-      font-family: sans-serif;
-      padding: 0;
-      background: #f0f8ff;
-      max-width: 700px;
-      margin: auto;
-      text-align: center;
-      overflow-y: scroll;
-    }
+  /* ====== আপনার মূল CSS ====== */
 
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-      text-align: left;
-      margin-left: 5%;
-    }
+body {
+  font-family: sans-serif;
+  padding: 0 10px;  /* মোবাইলের জন্য একটু প্যাডিং দিলাম, overflow এড়াতে */
+  background: #f0f8ff;
+  max-width: 700px;  /* ডেক্সটপে সর্বোচ্চ 700px */
+  margin: auto;
+  text-align: center;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
 
-    input, select {
-      padding: 12px;
-      width: 90%;
-      margin: 4px auto 10px;
-      font-size: 18px;
-      box-sizing: border-box;
-      display: block;
-    }
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+  text-align: left;
+  margin-left: 5%;
+}
 
-    button {
-      padding: 12px 24px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-      border-radius: 4px;
-      margin-top: 15px;
-    }
+input, select {
+  padding: 12px;
+  width: 90%;
+  margin: 4px auto 10px;
+  font-size: 18px;
+  box-sizing: border-box;
+  display: block;
+}
 
-    button:hover {
-      background-color: #0056b3;
-    }
+button {
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 4px;
+  margin-top: 15px;
+}
 
-    .result, .error {
-      margin: 20px auto 0;
-      padding: 14px;
-      border-radius: 6px;
-      font-size: 16px;
-      width: 90%;
-      text-align: center;
-    }
+button:hover {
+  background-color: #0056b3;
+}
 
-    .result {
-      background-color: #e0ffe0;
-      color: #006400;
-    }
+.result, .error {
+  margin: 20px auto 0;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 90%;
+  text-align: center;
+}
 
-    .error {
-      background-color: #ffe0e0;
-      color: #900000;
-    }
+.result {
+  background-color: #e0ffe0;
+  color: #006400;
+}
 
-    .section {
-      border: 2px solid #ccc;
-      padding: 16px;
-      border-radius: 8px;
-      margin: 20px auto;
-      width: 95%;
-      box-sizing: border-box;
-      text-align: left;
-    }
+.error {
+  background-color: #ffe0e0;
+  color: #900000;
+}
 
-    h2, h3 {
-      text-align: center;
-    }
+.section {
+  border: 2px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 20px auto;
+  width: 95%;
+  box-sizing: border-box;
+  text-align: left;
+}
 
-    .top-error {
-      position: fixed;
-      top: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: rgba(10, 80, 180, 0.3);
-backdrop-filter: blur(12px);
--webkit-backdrop-filter: blur(12px);
-        
-      color:#D32F2F;
-      padding: 12px 24px;
-      border-radius: 4px;
-      font-size: 40px;
-      font-weight: bold;
-      z-index: 9999;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
-    
-  
-   /* ব্যাকগ্রাউন্ড ব্লার/ডার্ক */
+h2, h3 {
+  text-align: center;
+}
+
+.top-error {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(10, 80, 180, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color:#D32F2F;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 40px;
+  font-weight: bold;
+  z-index: 9999;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ব্যাকগ্রাউন্ড ব্লার/ডার্ক */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.3); /* হালকা ডার্ক ট্রান্সপারেন্ট */
-  backdrop-filter: blur(3px); /* ব্যাকগ্রাউন্ড ব্লার */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(3px);
   z-index: 9998;
 }
 
-
-    
-    
-    .detect-btn {
+.detect-btn {
   position: sticky;
   bottom: 0;
   margin: 10px auto;
@@ -124,11 +121,11 @@ backdrop-filter: blur(12px);
   background-color: #007bff;
   color: white;
   padding: 6px 30px;
-  font-size: 16px;
+  font-size: 18px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: bottom 0.4s ease, top 0.4s ease; /* শুধু bottom আর top smooth হবে */
+  transition: bottom 0.4s ease, top 0.4s ease;
   width: 180px;
   height: 36px;
   line-height: 24px;
@@ -144,20 +141,13 @@ backdrop-filter: blur(12px);
   height: 36px;
   text-align: center;
   z-index: 999;
-  /* top: unset; bottom: 15px; এটাই ডিফল্ট */
 }
 
 .detect-btn.fixed.scroll-up {
   top: 15px;
   bottom: auto;
 }
-    
 
-    
-    
-    
-    
-    
 /* রেজাল্ট বক্স স্ক্রিনের মাঝে */
 .result-popup {
   position: fixed;
@@ -174,24 +164,19 @@ backdrop-filter: blur(12px);
   box-shadow: 0 0 15px rgba(0,0,0,0.3);
   z-index: 9999;
 }
-  
-  
-    
-    
+
 .bahu {
-    color: green ;
+  color: green;
 }  
-    
-  
-    
-    .home-button-wrapper {
+
+.home-button-wrapper {
   text-align: center;
   margin-top: 10px;
 }
 
 .home-button {
   display: inline-block;
-  background-color:#007bff; /* বেগুনি */
+  background-color:#007bff;
   color: white;
   padding: 10px 20px;
   text-decoration: none;
@@ -202,147 +187,21 @@ backdrop-filter: blur(12px);
 }
 
 .home-button:hover {
-  background-color: #a64ca6; /* হোভার করলে হালকা বেগুনি */
+  background-color: #a64ca6;
 }
-    
-    
+
 .cmn {
-   padding-left: 20px;
-   padding-right: 20px;
-}   
-    
-    
-  /*⛔⛔রেসপন্সিভ⛔⛔*/  
-    @media (max-width: 480px) {
-  body {
-    max-width: 100%;
-    padding: 0 10px;
-  }
-
-  label {
-    margin-left: 3%;
-    font-size: 14px;
-  }
-
-  input, select {
-    width: 95%;
-    font-size: 16px;
-    padding: 10px;
-  }
-
-  button {
-    font-size: 16px;
-    padding: 10px 18px;
-  }
-
-  .result, .error {
-    width: 95%;
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  .section {
-    width: 98%;
-    padding: 12px;
-    margin: 15px auto;
-  }
-
-  .top-error {
-    font-size: 28px;
-    padding: 10px 18px;
-    top: 30px;
-  }
-
-  .detect-btn {
-    width: 150px;
-    height: 32px;
-    padding: 6px 20px;
-    font-size: 14px;
-    margin: 8px auto;
-  }
-
-  .result-popup {
-    font-size: 16px;
-    padding: 16px 24px;
-    width: 90%;
-  }
-
-  .home-button {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
-
-  .cmn {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-@media (min-width: 481px) and (max-width: 700px) {
+/* ====== Responsive adjustment only for container ====== */
+@media (max-width: 700px) {
   body {
-    max-width: 100%;
-    padding: 0 20px;
-  }
-
-  label {
-    margin-left: 4%;
-    font-size: 16px;
-  }
-
-  input, select {
-    width: 90%;
-    font-size: 17px;
-    padding: 11px;
-  }
-
-  button {
-    font-size: 17px;
-    padding: 11px 22px;
-  }
-
-  .result, .error {
-    width: 90%;
-    font-size: 15px;
-    padding: 12px;
-  }
-
-  .section {
-    width: 95%;
-    padding: 14px;
-    margin: 18px auto;
-  }
-
-  .top-error {
-    font-size: 35px;
-    padding: 11px 22px;
-    top: 40px;
-  }
-
-  .detect-btn {
-    width: 170px;
-    height: 34px;
-    padding: 6px 25px;
-    font-size: 15px;
-    margin: 9px auto;
-  }
-
-  .result-popup {
-    font-size: 17px;
-    padding: 18px 26px;
-    width: 95%;
-  }
-
-  .home-button {
-    font-size: 15px;
-    padding: 9px 18px;
-  }
-
-  .cmn {
-    padding-left: 15px;
-    padding-right: 15px;
+    max-width: 100%; /* পুরো স্ক্রীনে আসবে */
   }
 }
-    
+   
     
     
     
@@ -362,8 +221,8 @@ backdrop-filter: blur(12px);
     
     
     <div class="cmn">
-        <p><strong style="color:purple; text-align:center; font-size:18px;"> নিচে 'ক' ও 'খ' ২টি সেকশন রয়েছে। <br>৪ বাহুর জন্য ক) এবং ৩বাহুর জন্য খ) ব্যবহার করুন।</strong></p>   
-    <p><strong style="color:indigo;"> প্রত্যেকটি বাহুর মান দিন। কোণের মান দিলে প্রকৃত শেইপ বের হবে। তবে সমস্যা নেই, প্রকৃত শেইপ এবং অপ্রকৃত শেইপ উভয়েরর ফলাফল সেইম বের হবে। তাই এখানে কোণের মান ছাড়াও শুধুই বাহুর মান ব্যবহার করিলেও অসুবিধা নেই। তবে কোণের মান জানা থাকলে দিন, তাতে প্রকৃত শেইপ পাবেন। </strong></p>
+        <p><strong style="color:green; text-align:center; font-size:18px;"> নিচে 'ক' ও 'খ' ২টি সেকশন রয়েছে। <br>৪ বাহুর জন্য ক) এবং ৩বাহুর জন্য খ) ব্যবহার করুন।</strong></p>   
+    <p><strong style="color:purple;"> প্রত্যেকটি বাহুর মান দিন। কোণের মান দিলে প্রকৃত শেইপ বের হবে। তবে সমস্যা নেই, প্রকৃত শেইপ এবং অপ্রকৃত শেইপ উভয়েরর ফলাফল সেইম বের হবে। তাই এখানে কোণের মান ছাড়াও শুধুই বাহুর মান ব্যবহার করিলেও অসুবিধা নেই। তবে কোণের মান জানা থাকলে দিন, তাতে প্রকৃত শেইপ পাবেন। </strong></p>
 
     </div>
     
