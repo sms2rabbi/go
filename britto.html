@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <title>বাঁকা গোলক</title>
+  <style>
+    
+  
+  /* বেসিক বডি স্টাইল */
+  body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f8ff;
+  padding: 0 10px 20px;
+  max-width: 700px;
+  margin: auto;
+  color: #2c3e50;
+  text-align: center;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* হেডার */
+h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+/* লেবেল স্টাইল */
+label {
+  display: block;
+  margin: 12px auto 5px;
+  font-weight: 600;
+  text-align: left;
+  width: 90%;
+  max-width: 90%;
+  margin-left: 5%;
+  box-sizing: border-box;
+}
+
+/* ইনপুট ও সিলেক্ট */
+input, select {
+  padding: 12px;
+  width: 90%;
+  max-width: 90%;
+  margin: 4px auto 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+  display: block;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  color: #333;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: inherit;
+}
+
+input:focus, select:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 6px rgba(13, 110, 253, 0.4);
+}
+
+  
+  
+  
+button, .calculate-btn {
+  margin-top: 20px;
+  padding: 12px 0;
+  background-color: #3a3f4b;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 120px;
+  text-align: center;
+}
+
+button:hover, .calculate-btn:hover {
+  background-color: #555b68;
+}
+  
+  
+  
+  
+  
+
+/* রেজাল্ট ও এরর মেসেজ */
+.result, .error {
+  margin-top: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.4;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.result {
+  background-color: #e0f7fa;
+  color: #006064;
+  border: 1px solid #4dd0e1;
+}
+
+#errorBox {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 5px;
+  background-color: #f8d7da;
+  color: #721c24;
+  max-width: 90%;
+  text-align: center;
+  border: 1px solid #ccc;
+}
+
+/* আউটপুট প্যারাগ্রাফ */
+#results p {
+  margin: 5px 0;
+  color: #28a745;
+  font-weight: 500;
+  text-align: center;
+}
+
+#hypotenuse {
+  color: #28a745;
+  font-weight: bold;
+  text-align: center;
+}
+
+#shotok {
+  color: #800080;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* হোম বাটন */
+.home-button {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  gap: 6px;
+}
+
+
+
+
+  @media (max-width: 480px) {
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+}
+  
+  
+  
+  </style>
+</head>
+<body>
+  
+  
+  <div class="home-button-wrapper">
+    <a href="index.html" class="home-button">🏠 Home</a>
+    </div>
+
+  <section id="errorBox" class="error"></section>
+
+<section>
+  <h3> অর্ধ/বাঁকা বৃত্তের টুকরোর ক্ষেত্রফল পরিমাপ</h3>
+</section>
+
+<section>
+  <label>ক্যালকুলেশন টাইপ:</label>
+  <select id="type" onchange="renderInputs()">
+    <option value="sector">সেক্টর (ব্যাসার্ধ + কোণ)</option>
+    <option value="segment">সেগমেন্ট (চোর্ড + বাঁকা উচ্চতা)</option>
+    <option value="annulusSector">অর্ধবৃত্ত (দুই ব্যাসার্ধ + কোণ)</option>
+    <option value="annulusSegment">অর্ধবৃত্ত সেগমেন্ট (দুই চোর্ড + দুই উচ্চতা)</option>
+  </select>
+</section>
+
+<section id="inputs"></section>
+
+<section>
+  <button class="calculate-btn" onclick="calculate()">হিসাব করুন</button>
+</section>
+
+<section>
+  <div id="result" class="result" style="display:none;"></div>
+</section>
+  
+  
+  <section style="text-align: justify; max-width: 800px; margin: auto; padding: 10px;">
+
+  <img src="pic1.png" alt="ডায়াফ্রাম"
+    style="display: block; max-width: 100%; height: auto; border: 1px solid #ccc; border-radius: 6px; margin: 15px auto;" />
+
+    
+  <div style="text-align: center;">
+  <span style="font-size: 13px; color: red; display: inline-block; max-width: 90%; white-space: normal;">
+    চাঁরটি আলাদা-আলাদা গোলাকার/বাঁকা খন্ডের ডায়াফ্রাম:
+  </span>
+  <p style="
+    display: inline-block;
+    max-width: 90%;
+    text-align: center;
+    margin-top: 5px;
+    white-space: normal;
+  ">
+    ছবিটি AI দ্বারা জেনারেট করার সময় কিছু বাংলা বানান মিসিং হয়েছে। সমস্যা নেই, ছবিটি ভাল করে দেখেই নিচের ৪টি বিষয় বুঝলেই হবে।
+  </p>
+</div>
+  
+    
+  <ul style="padding-left: 20px;">
+    <li><strong>🔴১) সেক্টর:</strong> বৃত্তের নির্দিষ্ট কোণের একটি খণ্ড। ব্যাসার্ধ ও কোণ দিয়ে হিসাব হয়।</li>
+    <li><strong>🔴 ২) সেগমেন্ট:</strong> চোর্ড ও বাঁকা উচ্চতা দিয়ে নির্ধারিত বৃত্তের অংশ। ক্ষেত্রফল নির্ণয়ে উচ্চতাভিত্তিক গাণিতিক নিয়ম ব্যবহৃত হয়।</li>
+    <li><strong>🔴 ৩) অর্ধবৃত্ত সেক্টর:</strong> দুটি ব্যাসার্ধ ও কোণ দ্বারা তৈরি ডোনাটের এক খণ্ড। বড় ও ছোট বৃত্তের পার্থক্য হিসাব করা হয়।</li>
+    <li><strong>🔴 ৪) অর্ধবৃত্ত সেগমেন্ট:</strong> দুটি চোর্ড ও উচ্চতার উপর ভিত্তি করে বড় ও ছোট সেগমেন্টের ক্ষেত্রফল বের করে বিয়োগ করা হয়।</li>
+    <li> <span style="color:indigo;"> উপরের এ ৪টি সূত্র থেকে যেকোণো একটি সিলেক্ট করেই এখানে যেকোনো একটি ক্ষেত্রের গোলাকার খন্ডাংশের ক্ষেত্রফল নির্ণয় করা যায়। তবে মনে রাখতে হবে, গোলাকার খন্ডাংশের ক্ষেত্রফল একেবারেই নিখুঁত নির্ণয় করা সম্ভব নয়। তবে এখানে সর্বচ্চো সূত্র ব্যবহার করা হয়েছে। আপনি উপরের বক্স থেকে যেকোনো একটি সূত্র দিয়ে ক্ষেত্রফল নির্ণয় করতে পারেন। তবে এখানের ( চোর্ড + উচ্চতা ) এই সূত্রটিই অনেক বেশিই নিখুঁত মান দেয়। </span></li>
+    <li> মাত্র ১মিনিটেই ভূমির ক্ষেত্রফল তথা শতক, কাটা, বিঘা বের করতে হলে উপরের Home বাটনে ক্লিক করে প্রথম পৃষ্ঠায় যান। ধন্যবাদ, </li>
+    <br>
+    <li> উপরের বিষয় যদি আপনি কিছুই না বুঝে থাকেন তাহলে কোনো সমস্যা আছে? একদম না। বক্সে শুধু আপনার জমির বাহু বা কোণের মান বসান, আর ক্লিক করুন, ফলাফল পান ১সেকেন্ডেই। কোণ° কি কঠিন হয়েগেল অনেকের জন্যেই? সমস্যা না। শুধু বাহু গুলোর সঠিক মান দিন। জমির কয়টি বাহুর মান বসাতে হবে বক্সে তা বক্সই আপনাকে বলবে। একেবারেই সহজ। <br> এই ওয়েবসাইটটি ব্যবহার করার মানে এই নয় যে আপনাকে গাণিতিক সূত্র বুঝতে হবে। গাণিতিক সূত্র দিয়ে অংক করার জন্য এখানে আসেন নাই। সূত্র বুঝবে ওয়েবসাইট। অংক করে দেবে ওয়াবসাইট। আপনার কাজ হল বক্সে মান বসিয়ে বাটনে ক্লিক করা এবং মাত্র এক সেকেন্ডেই ফলাফল বের হয়ে যাওয়া, আর ঠিক তাই হয় এখানে। যেকোনো ধরণের ভূমি পরিমাপ করুন নিজেই। নিজের ভূমি নিজেই মাপুন। একটা ফিতা নিয়ে সীমানা মেপে মান গুলো নিয়ে এসে ওয়েবসাইটের প্রথম পৃষ্ঠায় ঢালুন আর এক সেকেন্ডেই নির্ভুল ফলাফল পেয়ে যান। ইনশাল্লহ, আরো নতুন-নতুন আপডেট আসবে শীঘ্রই যে, শুধুমাত্র একটি পয়েন্ট ও একটি দিক দিয়ে পলিগন পদ্ধতিতে ক্ষেত্রকে নিখুঁতভাবে আবদ্ধ করার উপায়, ইত্যাদি।</li>
+  </ul>
+</section>
+  
+ 
+  
+  
+  
+<script>
+  
+  let errorTimeout;
+
+  
+  function showError(msg) {
+  clearTimeout(errorTimeout);
+  const errorBox = document.getElementById('errorBox');
+  errorBox.innerText = " 🖐️🖐️ " + msg;
+  errorBox.style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+
+  // সতর্ক বার্তা হলে ব্যাকগ্রাউন্ড কালো
+  if (msg.includes("⚠️ সতর্কতা: নিচের টেক্সট সম্পূর্ণটা পড়ুন।")) {
+    errorBox.style.backgroundColor = 'black';
+    errorBox.style.color = 'white';
+  } else {
+    errorBox.style.backgroundColor = '#f8d7da';
+    errorBox.style.color = '#721c24';
+  }
+
+  errorTimeout = setTimeout(() => {
+    errorBox.style.display = 'none';
+    errorBox.innerText = '';
+  }, 4000);
+}
+  
+  
+  
+
+  function clearError() {
+    clearTimeout(errorTimeout);
+    const errorBox = document.getElementById('errorBox');
+    errorBox.style.display = 'none';
+    errorBox.innerText = '';
+  }
+
+  function renderInputs() {
+    clearError();
+    const type = document.getElementById('type').value;
+    const inputs = document.getElementById('inputs');
+    inputs.innerHTML = '';
+
+    if (type === 'sector') {
+      inputs.innerHTML = `
+        <label>ব্যাসার্ধ (ফুট):</label>
+        <input type="number" id="radius" min="0" step="any" placeholder="যেমন: 10" />
+        <label>কোণ (ডিগ্রী):</label>
+        <input type="number" id="angle" min="0" step="any" placeholder="যেমন: 60" />
+      `;
+    } else if (type === 'segment') {
+      inputs.innerHTML = `
+        <label>চোর্ড দৈর্ঘ্য (ফুট):</label>
+        <input type="number" id="chord" min="0" step="any" placeholder="যেমন: 12" />
+        <label>বাঁকা উচ্চতা (ফুট):</label>
+        <input type="number" id="height" min="0" step="any" placeholder="যেমন: 2" />
+      `;
+    } else if (type === 'annulusSector') {
+      inputs.innerHTML = `
+        <label>বড় ব্যাসার্ধ (ফুট):</label>
+        <input type="number" id="bigRadius" min="0" step="any" placeholder="যেমন: 15" />
+        <label>ছোট ব্যাসার্ধ (ফুট):</label>
+        <input type="number" id="smallRadius" min="0" step="any" placeholder="যেমন: 10" />
+        <label>কোণ (ডিগ্রী):</label>
+        <input type="number" id="angle" min="0" step="any" placeholder="যেমন: 45" />
+      `;
+    } else if (type === 'annulusSegment') {
+      inputs.innerHTML = `
+        <label>বড় চোর্ড দৈর্ঘ্য (ফুট):</label>
+        <input type="number" id="bigChord" min="0" step="any" placeholder="যেমন: 20" />
+        <label>বড় বাঁকা উচ্চতা (ফুট):</label>
+        <input type="number" id="bigHeight" min="0" step="any" placeholder="যেমন: 3" />
+        <label>ছোট চোর্ড দৈর্ঘ্য (ফুট):</label>
+        <input type="number" id="smallChord" min="0" step="any" placeholder="যেমন: 14" />
+        <label>ছোট বাঁকা উচ্চতা (ফুট):</label>
+        <input type="number" id="smallHeight" min="0" step="any" placeholder="যেমন: 1.5" />
+      `;
+    }
+  }
+
+  function addUnitConversions(area) {
+    const shotok = area / 435.6;
+    const katha = area / 720;
+    const bigha = shotok / 33;
+    const acre = area / 43560;
+
+    return `
+      📏 <b>মোট স্কয়ার ফুট:</b> ${area.toFixed(2)} ft²<br>
+      🔸 <b>≈ ${shotok.toFixed(4)} শতক</b><br>
+      🔸 <b>≈ ${katha.toFixed(4)} কাঠা</b><br>
+      🔸 <b>≈ ${bigha.toFixed(4)} বিঘা</b><br>
+      🔸 <b>≈ ${acre.toFixed(6)} একর</b><br>
+    `;
+  }
+
+  function calculate() {
+    clearError();
+    const type = document.getElementById('type').value;
+    const result = document.getElementById('result');
+    result.style.display = 'none';
+
+    // Helper to calculate segment area
+    function segmentArea(r, theta) {
+      // r = radius, theta = central angle in radian
+      return (r * r / 2) * (theta - Math.sin(theta));
+    }
+
+    if (type === 'sector') {
+      const r = parseFloat(document.getElementById('radius').value);
+      const angle = parseFloat(document.getElementById('angle').value);
+
+      if (isNaN(r) || isNaN(angle) || r <= 0 || angle <= 0 || angle > 360) {
+        showError("সঠিক ব্যাসার্ধ ও ০ থেকে ৩৬০ এর মধ্যে কোণ দিন।");
+        return;
+      }
+
+      const area = (angle / 360) * Math.PI * r * r;
+      const arc = (angle / 360) * 2 * Math.PI * r;
+
+      result.innerHTML = `
+        🟢 <b>সেক্টরের ক্ষেত্রফল:</b> ${area.toFixed(2)} বর্গফুট<br>
+        🔁 <b>বাঁকা অংশের দৈর্ঘ্য:</b> ${arc.toFixed(2)} ফুট<br>
+        ${addUnitConversions(area)}
+      `;
+      result.style.display = 'block';
+
+    } else if (type === 'segment') {
+      const c = parseFloat(document.getElementById('chord').value);
+      const h = parseFloat(document.getElementById('height').value);
+
+      if (isNaN(c) || isNaN(h) || c <= 0 || h <= 0) {
+        showError("সঠিক চোর্ড ও বাঁকা উচ্চতা দিন।");
+        return;
+      }
+      if (h > c/2) {
+        showError("উচ্চতা চোর্ডের অর্ধেকের চেয়ে বেশি হতে পারে না।");
+        return;
+      }
+
+      const a = c / 2;
+      const r = (a * a + h * h) / (2 * h);
+      const theta = 2 * Math.acos((r - h) / r);
+      const area = segmentArea(r, theta);
+
+      result.innerHTML = `
+        🌀 <b>বাঁকা টুকরোর ক্ষেত্রফল (সেগমেন্ট):</b> ${area.toFixed(2)} বর্গফুট<br>
+        🧮 <b>আনুমানিক ব্যাসার্ধ:</b> ${r.toFixed(2)} ফুট<br>
+        📐 <b>কোণ:</b> ${(theta * 180 / Math.PI).toFixed(2)} ডিগ্রী<br>
+        ${addUnitConversions(area)}
+      `;
+      result.style.display = 'block';
+
+    } else if (type === 'annulusSector') {
+      const R = parseFloat(document.getElementById('bigRadius').value);
+      const r = parseFloat(document.getElementById('smallRadius').value);
+      const angle = parseFloat(document.getElementById('angle').value);
+
+      if (
+        isNaN(R) || isNaN(r) || isNaN(angle) ||
+        R <= 0 || r <= 0 || angle <= 0 || angle > 360 ||
+        r >= R
+      ) {
+        showError("সঠিক বড় ও ছোট ব্যাসার্ধ এবং ০ থেকে ৩৬০ এর মধ্যে কোণ দিন। ছোট ব্যাসার্ধ বড় ব্যাসার্ধের চেয়ে ছোট হতে হবে।");
+        return;
+      }
+
+      const areaBig = (angle / 360) * Math.PI * R * R;
+      const areaSmall = (angle / 360) * Math.PI * r * r;
+      const area = areaBig - areaSmall;
+      const arcBig = (angle / 360) * 2 * Math.PI * R;
+      const arcSmall = (angle / 360) * 2 * Math.PI * r;
+
+      result.innerHTML = `
+        🎯 <b>অর্ধবৃত্ত সেক্টরের ক্ষেত্রফল:</b> ${area.toFixed(2)} বর্গফুট<br>
+        🔁 <b>বড় বাঁকা অংশের দৈর্ঘ্য:</b> ${arcBig.toFixed(2)} ফুট<br>
+        🔁 <b>ছোট বাঁকা অংশের দৈর্ঘ্য:</b> ${arcSmall.toFixed(2)} ফুট<br>
+        ${addUnitConversions(area)}
+      `;
+      result.style.display = 'block';
+
+    } else if (type === 'annulusSegment') {
+      const bigChord = parseFloat(document.getElementById('bigChord').value);
+      const bigHeight = parseFloat(document.getElementById('bigHeight').value);
+      const smallChord = parseFloat(document.getElementById('smallChord').value);
+      const smallHeight = parseFloat(document.getElementById('smallHeight').value);
+
+      if (
+        [bigChord, bigHeight, smallChord, smallHeight].some(x => isNaN(x) || x <= 0)
+      ) {
+        showError("সব ইনপুট সঠিক এবং ধনাত্মক সংখ্যা হতে হবে।");
+        return;
+      }
+
+      if(bigHeight > bigChord / 2){
+        showError("বড় বাঁকা উচ্চতা বড় চোর্ডের অর্ধেকের বেশি হতে পারে না।");
+        return;
+      }
+      if(smallHeight > smallChord / 2){
+        showError("ছোট বাঁকা উচ্চতা ছোট চোর্ডের অর্ধেকের বেশি হতে পারে না।");
+        return;
+      }
+
+      const bigA = bigChord / 2;
+      const bigR = (bigA * bigA + bigHeight * bigHeight) / (2 * bigHeight);
+      const bigTheta = 2 * Math.acos((bigR - bigHeight) / bigR);
+      const bigArea = (bigR * bigR / 2) * (bigTheta - Math.sin(bigTheta));
+
+      const smallA = smallChord / 2;
+      const smallR = (smallA * smallA + smallHeight * smallHeight) / (2 * smallHeight);
+      const smallTheta = 2 * Math.acos((smallR - smallHeight) / smallR);
+      const smallArea = (smallR * smallR / 2) * (smallTheta - Math.sin(smallTheta));
+
+      const area = bigArea - smallArea;
+
+      result.innerHTML = `
+        🎯 <b>অর্ধবৃত্ত সেগমেন্টের ক্ষেত্রফল:</b> ${area.toFixed(2)} বর্গফুট<br>
+        🧮 <b>বড় অংশের আনুমানিক ব্যাসার্ধ:</b> ${bigR.toFixed(2)} ফুট<br>
+        🧮 <b>ছোট অংশের আনুমানিক ব্যাসার্ধ:</b> ${smallR.toFixed(2)} ফুট<br>
+        ${addUnitConversions(area)}
+      `;
+      result.style.display = 'block';
+    }
+  }
+
+  
+  window.onload = function() {
+  renderInputs();
+
+  // প্রথমবার লোডে সতর্কবার্তা
+  showError("ভূমির ক্ষেত্রফল নির্ণয় করা এখন সকলের জন্যেই সহজ। Home এ ক্লিক করে দেখুন প্রথম পৃষ্ঠায়।");
+
+  // প্রতি ১ মিনিট পরপর সতর্কবার্তা রিপিট
+  setInterval(() => {
+    showError("এখন মাত্র ১মিনিটেই নিজের জমির হিসেব নিজেই বের করায় এখানে। চেষ্টা করে দেখুন।");
+  }, 60000);
+};
+  
+  
+  
+  
+  
+  
+</script>
+
+</body>
+</html>
