@@ -205,19 +205,32 @@ button:focus {
 /* ছোট স্ক্রীন মোডে অতিরিক্ত কোন পরিবর্তন না করে  */
 /* কারণ বডির ম্যাক্স-উইথ 700px এবং প্যাডিং 10px, তাই মোবাইলেও ভালো দেখা যায় */
 
-@media (min-width: 701px) {
-  label {
-    font-size: 1.1rem;
-    padding-left: 5%;
-    padding-right: 5%;
+@media (max-width: 700px) {
+  body {
+    width: 100%;
+    padding: 0 10px;
   }
+
+  .section,
+  #inputs1,
+  #inputs2,
+  #inputs3,
+  #results,
   input,
-  select {
-    font-size: 16px;
-    padding: 12px 15px;
+  select,
+  button,
+  label {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
+
   .calculate-btn {
-    width: 120px !important;
-    font-size: 16px;
+    width: 120px; /* হুবহু আগের মতো */
+  }
+
+  #error {
+    left: 10px;
+    right: 10px;
   }
 }
