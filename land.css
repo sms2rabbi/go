@@ -1,4 +1,4 @@
-}/* বেসিক বডি স্টাইল */
+/* বেসিক বডি স্টাইল */
 body {
   font-family: 'Noto Sans Bengali', sans-serif, sans-serif;
   padding: 0 10px; /* মোবাইল ও ছোট স্ক্রিনে প্যাডিং */
@@ -205,97 +205,19 @@ button:focus {
 /* ছোট স্ক্রীন মোডে অতিরিক্ত কোন পরিবর্তন না করে  */
 /* কারণ বডির ম্যাক্স-উইথ 700px এবং প্যাডিং 10px, তাই মোবাইলেও ভালো দেখা যায় */
 
-/* === Responsive media queries keeping exact layout and calculate-btn width intact === */
-
-/* ছোট স্ক্রীন মোবাইলে */
-@media (max-width: 420px) {
-  body {
-    padding-left: 10px;
-    padding-right: 10px;
-    max-width: 100vw;
-  }
-  
-  input, select {
-    width: 90%;
-    max-width: 90%;
-    font-size: 16px;
-    padding: 10px 12px;
-  }
-  
-  label {
-    margin-left: 5%;
-    width: 90%;
-  }
-  
-  /* Calculate button ঠিক 120px থাকবে, হরাইজন্টালি সেন্টার */
-  .calculate-btn {
-    width: 120px !important;
-    display: block;
-    margin: 0 auto 15px auto;
-    font-size: 16px;
-    border-radius: 10px;
-  }
-}
-
-/* মিডিয়াম স্ক্রিন (মোবাইল থেকে ট্যাব পর্যন্ত) */
-@media (min-width: 421px) and (max-width: 700px) {
-  body {
-    max-width: 700px;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  input, select {
-    width: 90%;
-    max-width: 90%;
-    font-size: 17px;
-    padding: 11px 14px;
-  }
-
-  label {
-    margin-left: 5%;
-    width: 90%;
-  }
-
-  .calculate-btn {
-    width: 120px !important;
-    display: block;
-    margin: 0 auto 15px auto;
-    font-size: 16px;
-    border-radius: 10px;
-  }
-}
-
-/* বড় স্ক্রীনে (ডেস্কটপ) */
 @media (min-width: 701px) {
-  body {
-    max-width: 700px;
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  input, select {
-    width: 90%;
-    max-width: 90%;
-    font-size: 18px;
-    padding: 12px;
-  }
-
   label {
-    margin-left: 5%;
-    width: 90%;
+    font-size: 1.1rem;
+    padding-left: 5%;
+    padding-right: 5%;
   }
-
+  input,
+  select {
+    font-size: 16px;
+    padding: 12px 15px;
+  }
   .calculate-btn {
     width: 120px !important;
-    display: block;
-    margin: 0 auto 15px auto;
     font-size: 16px;
-    border-radius: 10px;
   }
 }
-
-
-
-
-
