@@ -205,10 +205,12 @@ button:focus {
 /* ছোট স্ক্রীন মোডে অতিরিক্ত কোন পরিবর্তন না করে  */
 /* কারণ বডির ম্যাক্স-উইথ 700px এবং প্যাডিং 10px, তাই মোবাইলেও ভালো দেখা যায় */
 
-@media (max-width: 700px) {
+@media (max-width: 1024px) {
   body {
-    width: 100%;
     padding: 0 10px;
+    margin: auto;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .section,
@@ -226,11 +228,12 @@ button:focus {
   }
 
   .calculate-btn {
-    width: 120px; /* হুবহু আগের মতো */
+    width: 120px;
   }
 
   #error {
     left: 10px;
     right: 10px;
+    box-sizing: border-box;
   }
 }
