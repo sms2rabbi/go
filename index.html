@@ -6,9 +6,15 @@
   <link rel="stylesheet" href="header.css">
   <link rel="stylesheet" href="land.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
 </head>
 <body>
 
+  
+  
+ <div class="glow-background"></div>
+  
+  
   
   <!--- ⛔⛔⛔ হেডার ⛔⛔⛔ --->
     <header>
@@ -53,13 +59,95 @@
     </div>
   </div>
 </header>
-  <!--- ⛔⛔⛔ হেডার ⛔⛔⛔ --->
+  <!--- ⛔⛔⛔ হেডার শেষ ⛔⛔⛔ --->
+  
+  
+  <div id="section5" class="section-five">
+    
+    <div class="top-tvD">
+  <!-- টিভির টেক্সট --> 
+    <div id="commonD" class="cmnD">     
+    <div id="txd-D">
+  <div id="animationBox">
+    <marquee behavior="scroll" direction="up" scrollamount="2">
+      🔺 তিন বাহুর ত্রিভুজের ক্ষেত্রফল = √[s(s-a)(s-b)(s-c)] <br><br>
+      উদাহরণঃ a=5, b=6, c=7 <br>
+      s = (a+b+c)/2 = 9 <br>
+      Area = √[9×(9-5)×(9-6)×(9-7)] = √[9×4×3×2] = √216 ≈ 14.7<br><br>
+      ✅ Heron's Formula কাজ করে!
+    </marquee>
+  </div>
+</div>
+      
+      
+      
+    <div id="ang-D" class="anl-D">
+   <svg id="triangleCanvas" viewBox="0 0 100 100" width="100" height="100" preserveAspectRatio="xMidYMid meet"></svg>   
+    </div>
+      
+    </div>
+    
+    
+    
+    <div class="bottom-mrq">
+  <div class="modern-marquee">
+    <div class="marquee-track">
+      📢 ত্রিভুজ আকৃতির ভূমি হলে নিচে A ও B এবং C ইনপুটে মান বসিয়ে হিসেব করুন |
+      📢 চতুর্ভুজ আকৃতির ভূমি হলে নিচে স্ক্রুল করে চতুর্ভুজ ম্যানু সিলেক্ট করেই হিসেব করুন |
+      📢 যেকোনো ধরণের ভূমির শেইপ এখানে হিসেব করার ব্যবস্থা রয়েছে। |
+
+      📢 ত্রিভুজ আকৃতির ভূমি হলে নিচে A ও B এবং C ইনপুটে মান বসিয়ে হিসেব করুন |
+      📢 চতুর্ভুজ আকৃতির ভূমি হলে নিচে স্ক্রুল করে চতুর্ভুজ ম্যানু সিলেক্ট করেই হিসেব করুন |
+      📢 যেকোনো ধরণের ভূমির শেইপ এখানে হিসেব করার ব্যবস্থা রয়েছে।
+    </div>
+  </div>
+</div>
+</div>
+
+  </div>
   
   
   
   
+ 
   
   
+<div id="sectionD4" class="section4">
+  <!-- ইনপুট সেকশনের জন্য -->
+  <div class="inputs-bgD">
+    
+    <div class="input-fieldD">
+      <input type="number" id="sideAD" placeholder="প্রথম বাহু A  (ফুট)" />
+    </div>
+
+    <div class="input-fieldD">
+      <input type="number" id="sideBD" placeholder="দ্বিতীয় বাহু B (ফুট)" />
+    </div>
+
+    <div class="input-fieldD">
+      <input type="number" id="sideCD" placeholder="তৃতীয় বাহু C (ফুট)" />
+    </div>
+
+    <div class="button-parentD" onclick="calculateTriangleAreaD()">
+      <button class="glass-buttonD"><span>= হিসাব করুন</span></button>
+    </div>
+
+   
+    <div class="resultD" id="resultBoxD" style="display:none;"></div>
+     <div class="errorD" id="errorBoxD"></div>
+
+  </div> <!-- .inputs-bgD -->
+
+</div> <!-- .sectionD end-->
+ 
+
+    
+    
+    
+    
+    
+    
+  <!-- ⛔⛔⛔মেইন ⬇️⬇️⬇️ --->
     
 <!-- 🔺 Error Box: সবার উপরে এবং section এর বাইরে -->
 <div id="error" class="error"
@@ -68,8 +156,6 @@
   
 <!-- 🔶 Section 1: হেডিং ও চতুর্ভুজ অপশন -->
 <div class="section">
-  <h2>ভূমি পরিমাপ ক্যালকুলেটর</h2>
-
   <div class="form-group">
     <label for="shape" class="common-text">চতুর্ভুজ আকৃতির জমির ধরন নির্বাচন করুন</label>
     <select id="shape">
@@ -163,7 +249,9 @@
  
   
   
-  
  <script src="land.js"></script>
+  <script src="art.js"></script>
+  <script src="tv.js"></script>
+  
 </body>
 </html>
