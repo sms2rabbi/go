@@ -1,42 +1,52 @@
- /* হেডার বেসিক স্টাইল */
+/* ✅ হেডার */
 header {
-  position: sticky;
-  top: 0;
-  margin-bottom: 3px;
   width: 100%;
-  background-color: transparent;
-  color: black;
-  border-radius: 0 0 5px 5px;
-  z-index: 1000;
-  font-family: 'Segoe UI', sans-serif;
-  
+  margin: 0;
+  padding: 0;
+  border-bottom: none;
+  position: relative;
+  z-index: 2;
 }
 
-/* হেডারের ভিতরের কন্টেইনার */
+
+/* ✅ ইনার হেডার */
 .header-inner {
+  width: auto;
   max-width: 700px;
-  margin: 0 auto;
+  padding: 6px 0px;
+  margin: 0 auto; /* কোনো উপরের মার্জিন দিচ্ছি না */
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
-  box-sizing: border-box;
-}
-
-/* মেনু সেকশন (বাম ও ডান) */
-.menu-section {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* হ্যামবার্গার আইকন বাম ও ডানে */
-.menu-icon-left,
-.menu-icon-right {
-  cursor: pointer;
+  flex-wrap: nowrap;
   position: relative;
 }
+
+/* ✅ নিচে গ্যাপ বন্ধ করতে হেডারের পরের এলিমেন্টের margin-top মুছে দাও */
+header + * {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+
+@media (max-width: 768px) {
+  .header-inner {
+    padding: 6px 12px; /* মোবাইলে একটু কম সাইড প্যাডিং */
+    flex-direction: row;
+    flex-wrap: wrap; /* ভেতরের এলিমেন্টগুলো wrap হতে পারবে */
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-inner {
+    padding: 6px 12px;
+  }
+}
+
+
+
 
 /* বাম আইকন স্টাইল (পুরানো মতো) */
 .menu-icon-left {
@@ -168,10 +178,7 @@ header {
   background-color: #007BFF;
 }
 
-/* ড্রপডাউন দেখানোর জন্য ক্লাস */
-.menu-section.show-dropdown .dropdown {
-  display: flex;
-}
+
 
 .menu-section.menu-left .dropdown {
   left: 0;
@@ -184,40 +191,11 @@ header {
 }
 
 
-
-
-
-
-@media (max-width: 768px) {
-  .header-inner {
-    max-width: 100%;
-    padding: 10px 15px;
-    justify-content: space-between;
-    /* flex-wrap: nowrap;  এটা না দিলে এলিমেন্ট লাইন থেকে নিচে নেমে যেতে পারে */
-  }
-
-  .menu-section.menu-center {
-    gap: 15px; /* একটু কম গ্যাপ দিলে ভালো হয় */
-  }
-
-  .menu-center button,
-  .menu-center a {
-    font-size: 14px;
-    padding: 5px 10px;
-  }
-
-  /* হ্যামবার্গার আইকনের সাইজ অপরিবর্তিত রাখা হয়েছে */
-  .menu-icon-left {
-    width: 25px;
-    height: 20px;
-  }
-
-  .menu-icon-right {
-    width: 6px;
-    height: 20px;
-  }
-
-  /* হেডার টেক্সট বা অন্য কোনো এলিমেন্ট থাকলে তার ফন্ট সাইজ বা মার্জিন সামঞ্জস্য করতে পারো */
+.menu-left, .menu-right {
+  position: relative;
+}
+.menu-left, .menu-right {
+  position: relative;
 }
 
 
