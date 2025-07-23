@@ -651,3 +651,148 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+
+
+//⛔⛔⛔⛔ নিচে ডি ক্যালকুলেটর
+let errorTimeoutD; // বাইরে ডিক্লেয়ার করে রাখো
+
+function calculateAngleCosineRule(a, b, c) {
+  if (a <= 0 || b <= 0 || c <= 0) return null;
+  if (a + b <= c || a + c <= b || b + c <= a) return null;
+
+  let cosC = (a * a + b * b - c * c) / (2 * a * b);
+  if (cosC > 1) cosC = 1;
+  if (cosC < -1) cosC = -1;
+
+  const angleRad = Math.acos(cosC);
+  return angleRad;
+}
+
+function showErrorD(message) {
+  const errorBox = document.getElementById('errorBoxD');
+  errorBox.innerText = message;
+  errorBox.style.display = 'block';
+
+  // আগের timeout থাকলে ক্যানসেল করে দাও
+  if (errorTimeoutD) clearTimeout(errorTimeoutD);
+
+  errorTimeoutD = setTimeout(() => {
+    errorBox.style.display = 'none';
+  }, 5000);
+}
+
+function calculateTriangleAreaD() {
+  const a = parseFloat(document.getElementById('sideAD').value);
+  const b = parseFloat(document.getElementById('sideBD').value);
+  const c = parseFloat(document.getElementById('sideCD').value); // এখানে angleCD নয়, sideCD
+
+  const errorBox = document.getElementById('errorBoxD');
+  const resultBox = document.getElementById('resultBoxD');
+  const topTv = document.getElementById('topTvD');
+
+  errorBox.innerText = '';
+  errorBox.style.display = 'none';
+  resultBox.style.display = 'none';
+  topTv?.classList.remove('glow-on');
+
+  // --- নতুন চেক: সব ইনপুট একসাথে খালি হলে ---
+  const rawA = document.getElementById('sideAD').value.trim();
+  const rawB = document.getElementById('sideBD').value.trim();
+  const rawC = document.getElementById('sideCD').value.trim();
+
+  if (rawA === '' && rawB === '' && rawC === '') {
+    showErrorD("ত্রিভুজ ABC এর মান বসান।");
+    return;
+  }
+  // --------------------------------------------
+
+  // ইনপুট খালি বা ভুল হলে এরর দেখাবে
+  let missingInputs = [];
+  if (isNaN(a) || a <= 0) missingInputs.push("A বাহুর মান দিন");
+  if (isNaN(b) || b <= 0) missingInputs.push("B বাহুর মান দিন");
+  if (isNaN(c) || c <= 0) missingInputs.push("C বাহুর মান দিন");
+
+  if (missingInputs.length > 0) {
+    showErrorD("Error " + missingInputs.join(" ও ") + "।");
+    return;
+  }
+
+  // ত্রিভুজের শর্ত চেক
+  const angleRad = calculateAngleCosineRule(a, b, c);
+  if (angleRad === null) {
+    showErrorD('ভুল: ত্রিভুজ হতে হলে যেকোনো দুই বাহুর যোগফল অপর বাহুর চেয়ে বড় হতে হবে।');
+    return;
+  }
+  
+  
+  let triangleType = '';
+if (a === b && b === c) {
+  triangleType = 'সমবাহু ত্রিভুজ';
+} else if (a === b || b === c || a === c) {
+  triangleType = 'সমদ্বিবাহু ত্রিভুজ';
+} else {
+  triangleType = 'বিষমবাহু ত্রিভুজ';
+}
+  
+  
+
+  // ক্ষেত্রফল হিসাব
+  const areaSqft = 0.5 * a * b * Math.sin(angleRad);
+
+  const shotok = areaSqft / 435.6;
+  const katha = areaSqft / 720;
+  const bigha = areaSqft / 14400;
+  const acre = areaSqft / 43560;
+
+  resultBox.innerHTML = `
+  <div class="result-row"><span>ফলাফলঃ</span><span></span></div>
+  <div class="result-row"><span>বর্গফুট:</span><span>${areaSqft.toFixed(2)}</span></div>
+  <div class="result-row"><span>শতক:</span><span>${shotok.toFixed(4)}</span></div>
+  <div class="result-row"><span>কাঠা:</span><span>${katha.toFixed(4)}</span></div>
+  <div class="result-row"><span>বিঘা:</span><span>${bigha.toFixed(6)}</span></div>
+  <div class="result-row"><span>একর:</span><span>${acre.toFixed(6)}</span></div>
+  <div class="result-row" style="font-size: 10px;"> ত্রিভুজের ধরনঃ&nbsp;${triangleType} </div>
+`;
+
+  resultBox.style.display = 'block';
+  if (topTv) topTv.classList.add('glow-on');
+}
+
+
+
+
+//⛔⛔ নিচে ম্যানু ও ইরোর বার্তা টাচ হাইড কোড,
+
+function hideErrorsAndDropdowns(event) {
+  // যদি ক্লিক/টাচ মেনুর ভিতরে হয়, তাহলে কিছু করো না
+  const isInsideMenu = event.target.closest('.menu-left') || event.target.closest('.menu-right');
+  if (isInsideMenu) return;
+
+  // Error divs গুলো
+  const errorDivs = [
+    document.getElementById('error'),
+    document.getElementById('errorBoxD'),
+  ];
+
+  errorDivs.forEach(div => {
+    if (div) {
+      div.innerText = '';
+      div.style.display = 'none';
+    }
+  });
+
+  // Dropdown মেনু গুলো
+  const leftDropdown = document.querySelector('.menu-left .dropdown');
+  const rightDropdown = document.querySelector('.menu-right .dropdown');
+
+  if (leftDropdown) leftDropdown.style.display = 'none';
+  if (rightDropdown) rightDropdown.style.display = 'none';
+}
+
+// টাচ ও ক্লিক দুটোতেই একই ফাংশন চলবে
+document.addEventListener('touchstart', hideErrorsAndDropdowns);
+document.addEventListener('mousedown', hideErrorsAndDropdowns);
+
+
+//end⛔⛔
