@@ -2,27 +2,55 @@
 body {
   font-family: 'Noto Sans Bengali', sans-serif, sans-serif;
   padding: 0 10px; /* মোবাইল ও ছোট স্ক্রিনে প্যাডিং */
-  background: #f0f8ff;
   max-width: 700px; /* ডেক্সটপে সর্বোচ্চ 700px */
   margin: auto;
   text-align: center;
   overflow-y: scroll;
   box-sizing: border-box;
   min-height: 100vh; /* ফুল ভিউ হাইট ধরে রাখবে */
+  background: #f0f8ff;
+  z-index: 0;
+  position: relative;
+  
 }
 
-/* লেবেল স্টাইল */
-label {
-  display: block;
-  margin-top: 12px;
-  font-weight: bold;
-  text-align: left;
-  margin-left: 5%;
-  width: 90%;
-  max-width: 90%;
-  box-sizing: border-box;
+
+
+/*⛔নিচে বডির এনিমেশন*/
+body::before {
+  content: '';
+  position: fixed; /* ✅ absolute নয় */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: linear-gradient(45deg, red, green, blue, red);
+  background-size: 400% 400%;
+  animation: rgbGlow 10s linear infinite;
+  filter: blur(20px);
+  opacity: 0.6;
 }
 
+
+/* RGB অ্যানিমেশন */
+@keyframes rgbGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+
+
+
+/*⛔⛔⛔*/
 /* ইনপুট ও সিলেক্ট বাটন */
 input, select {
   padding: 12px;
@@ -93,16 +121,12 @@ input {
 
 /* হেডার টেক্সট */
 h2, h3 {
-  
   color: gray;
   text-align: center;
-  margin-bottom: 15px;
 }
 
 
-
-
-/* সেকশন ও ইনপুট গ্রুপ */
+/*⛔⛔⛔⛔⛔❌❌❌ ১, ২ ও ৩ 1️⃣2️⃣3️⃣ */
 .section,
 #inputs1,
 #inputs2,
@@ -115,9 +139,11 @@ h2, h3 {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background-color: #fdfdfd;
   border: 1px solid #ddd;
   box-sizing: border-box;
+  background: linear-gradient(145deg, #1a1a1a, #121212);
+  box-shadow: 0 6px 20px rgba(0, 255, 0, 0.1), inset 0 0 12px rgba(0, 255, 0, 0.05);
+  
 }
 
 /* লেবেল */
@@ -126,7 +152,7 @@ label {
   text-align: center;
   font-weight: 600;
   margin-bottom: 5px;
-  color: #333;
+  color: #00ff9f;
 }
 
 /* ইনপুট, সিলেক্ট, বাটন */
@@ -135,21 +161,26 @@ input,
 button {
   width: 100%;
   max-width: 100%;
-  padding: 10px 14px;
-  border-radius: 5px;
-  border: 1px solid #aaa;
-  background-color: #fff;
-  color: #333;
-  font-size: 16px;
+  padding: 12px 14px;
+  font-size: 17px;
+  background: radial-gradient(circle at top left, #000 70%, #111);
+  color: #00ff9f;
+  border: 2px solid rgba(0, 255, 159, 0.3);
+  border-radius: 10px;
   box-sizing: border-box;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 5px rgba(0, 255, 128, 0.1);
+  transition: all 0.3s ease;
+  outline: none;
+  text-align: right;
 }
 
-/* ফোকাস এফেক্ট */
+/* ফোকাস ইফেক্ট */
 input:focus,
 select:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+  border-color: #39ff14;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+  color: #39ff14;
+  background: #000;
   outline: none;
 }
 
@@ -157,7 +188,16 @@ button:focus {
   outline: none;
 }
 
-/* এরর ম্যাসেজ */
+/* শুধু ইনপুটের প্যারেন্ট ডিভ ফোকাসে থাকলে glow হবে */
+.input-fieldD:focus-within {
+  box-shadow: 0 4px 16px rgba(0, 255, 0, 0.3), inset 0 0 12px rgba(0, 255, 0, 0.08);
+}
+
+
+
+
+
+/*⛔⛔⛔ এরর ম্যাসেজ */
 #error {
   color: red;
   font-weight: bold;
@@ -204,7 +244,6 @@ button:focus {
 
 /* ছোট স্ক্রীন মোডে অতিরিক্ত কোন পরিবর্তন না করে  */
 /* কারণ বডির ম্যাক্স-উইথ 700px এবং প্যাডিং 10px, তাই মোবাইলেও ভালো দেখা যায় */
-
 @media (max-width: 1024px) {
   body {
     padding: 0 10px;
@@ -213,6 +252,9 @@ button:focus {
     box-sizing: border-box;
   }
 
+  
+  /*❌❌❌❌ */
+  
   .section,
   #inputs1,
   #inputs2,
@@ -235,5 +277,502 @@ button:focus {
     left: 10px;
     right: 10px;
     box-sizing: border-box;
+  }
+}
+
+
+/*⛔⛔⛔⛔ সেকশন 4 4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣*/
+
+#sectionD4 {
+  
+  width: 100%;
+  border-radius: 6px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  background: linear-gradient(145deg, #1a1a1a, #121212);
+  box-shadow: 0 6px 20px rgba(0, 255, 0, 0.1), inset 0 0 12px rgba(0, 255, 0, 0.05);
+  
+  
+}
+
+/*⛔⛔⛔⛔ সেকশন end 4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣4️⃣*/
+
+/*⛔⛔⛔⛔ সেকশন 5 Start5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣*/
+
+#section5 {
+  width: 100%;
+  border-radius: 6px;
+  padding: 0px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  background: linear-gradient(145deg, #1a1a1a, #121212);
+  box-shadow: 0 6px 20px rgba(0, 255, 0, 0.1), inset 0 0 12px rgba(0, 255, 0, 0.05);
+  }
+
+/*⛔⛔⛔⛔ সেকশন 5 end 5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣5️⃣*/
+/*⛔🚫⛔🚫⛔🚫⛔🚫⛔🚫⛔🚫*/
+.top-tvD {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+
+  width: 100%; /* fit-content → 100% section fill করতে */
+  max-width: 100%;
+  padding: 10px 20px;
+
+  margin: 0; /* section5 এর padding আছে, তাই আলাদা margin লাগবে না */
+  box-sizing: border-box;
+
+  border: 8px solid rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  overflow: hidden;
+
+  height: auto;  /* section5 এর ভিতর সম্পূর্ণ জায়গা নিতে */
+  max-height: none;
+  
+
+  font-family: 'Courier New', monospace;
+  color: #00ffee;
+
+  background: radial-gradient(ellipse at center, #000 10%, #000000 100%);
+  background-blend-mode: overlay;
+  z-index: 0;
+}
+
+
+.top-tvD::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 220%;
+  height: 220%;
+
+  background: conic-gradient(from 90deg, #ff0000, #00ff00, #0080ff, #ff0000);
+  background-size: 400% 400%;
+  animation: glowMove 25s ease-in-out infinite;
+  
+  filter: blur(80px);
+  opacity: 0.28; /* একটু কমানো হলো যাতে মোটা না লাগে */
+  z-index: -1;
+  pointer-events: none;
+  mix-blend-mode: lighten;
+}
+
+@keyframes glowMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+/*⛔নিচে z-index দ্বারা TV এর কালার তল-উপর করার কোড */
+
+body::before {
+  z-index: -10;
+}
+
+.top-tvD {
+  z-index: 0;
+}
+
+.top-tvD::before {
+  z-index: -1;
+}
+
+
+
+/*⛔⛔⛔*/
+
+.text-tvD,
+.anl-D,
+.cmnD {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+/*⛔⛔⛔নিচে হিরোনের অংকের এনিমেশন বক্স*/
+
+#animationBox {
+  position: relative;
+  margin: 0;
+  padding: 0;              /* কোনো ভেতরের স্পেস না */
+  width: fit-content;      /* কনটেন্ট অনুযায়ী চওড়া */
+  height: auto;
+  background: transparent;
+  color: aliceblue;
+  font-size: 12px;
+  line-height: 1;
+  box-shadow: none;
+  border: none;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* এটা টেক্সটকে ওপরের দিকে ঠেলে রাখবে */
+  align-items: flex-start;
+}
+
+
+    .step-line {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .step-line.show {
+      opacity: 1;
+    }
+  
+
+.final-line {
+  font-size: 14px;
+  font-weight: normal;
+}
+
+
+/*⛔⛔⛔বটম মার্কিউ*/
+
+.bottom-mrq {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px; /* একটু বাড়ানো হলো যেন উপরের দিক কাটা না পড়ে */
+  background-color: transparent;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.6; /* এখানে বাড়ানো হয়েছে */
+  margin: 0;
+  padding-top: 2px; /* উপরের অংশের জন্য */
+  font-family: 'Courier New', monospace;
+  color: #00ffcc;
+}
+
+.modern-marquee {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding-top: 2px;  /* উপরে ফাঁকা জায়গা */
+  min-height: 22px; /* নির্দিষ্ট উচ্চতা যেন মাথা ঢাকে না */
+}
+
+.marquee-track {
+  display: inline-block;
+  white-space: nowrap;
+  padding-right: 100%;
+  animation: scroll-right 80s linear infinite;
+  color: cornsilk;
+  line-height: 1.6;     /* লেখার মাথা যেন দেখা যায় */
+  padding-top: 1px;     /* আরও সামান্য উপরের জন্য */
+  margin-top: 3px;
+}
+
+@keyframes scroll-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+
+
+ /*❌❌❌❌❌❌❌❌❌❌❌❌*/
+/*❌❌❌❌❌❌❌❌❌❌❌❌❌*/
+/*ত্রিভুজ ⛔⛔⛔⛔❌❌❌❌❌❌❌*/
+
+#triangleCanvas {
+  margin-top: 0;
+  width: 100%;           /* এখানে একক যোগ করা হলো */
+  height: 100px;
+   background: none !important;
+  background-color:red;
+}
+
+polygon {
+  fill: none; /* শুধু রেখা দেখাব */
+  stroke: #007BFF;
+  stroke-width: 3;
+  stroke-dasharray: 240; /* রেখার মোট দৈর্ঘ্য (প্রায়) */
+  stroke-dashoffset: 240;
+  animation: drawLine 3s forwards ease-in-out;
+}
+
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+line {
+  stroke: cyan;
+  stroke-width: 1;
+  fill: none;
+  stroke-dasharray: 1000; /* বড় মান দিয়ে শুরু */
+  stroke-dashoffset: 1000;
+  animation-fill-mode: forwards;
+}
+
+text {
+  fill: white;
+  font-size: 10px;
+  font-family: Arial, sans-serif;
+  text-anchor: middle;
+  font-weight: 300;
+}
+
+@keyframes dashmove {
+  to {
+    stroke-dashoffset: -8; /* 5+3 = 8 পিক্সেল */
+  }
+}
+
+
+
+/*⛔⛔⛔নিচে ইনপুট ফিল্ড*/
+
+input[type="number"] {
+  text-align: left !important;
+  direction: ltr;
+}
+
+
+.inputs-bgD {
+  max-width: 400px; /* ইনপুট ফিল্ডের মতোই সীমিত */
+  margin: 0px auto; /* সেন্টার করার জন্য auto মার্জিন */
+  padding: 40px 40px 30px 40px; 
+  border-radius: 20px;
+  background: linear-gradient(145deg, #1a1a1a, #121212);
+  box-shadow: 0 6px 20px rgba(0, 255, 0, 0.1), inset 0 0 12px rgba(0, 255, 0, 0.05);
+}
+
+
+.input-fieldD {
+  background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 255, 0, 0.1), inset 0 0 8px rgba(0, 255, 0, 0.05);
+}
+
+/* শুধু যখন ভিতরের ইনপুট ফোকাসে থাকবে তখন glow হবে */
+.input-fieldD:focus-within {
+  box-shadow: 0 4px 16px rgba(0, 255, 0, 0.3), inset 0 0 12px rgba(0, 255, 0, 0.08);
+}
+
+.input-fieldD input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 17px;
+  background: radial-gradient(circle at top left, #000 70%, #111);
+  color: #00ff9f;
+  border: 2px solid rgba(0, 255, 159, 0.3); /* হালকা বর্ডার */
+  border-radius: 10px;
+  text-align: right;
+  box-sizing: border-box;
+  box-shadow: 0 0 5px rgba(0, 255, 128, 0.1); /* হালকা শ্যাডো */
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.input-fieldD input:focus {
+  border-color: #39ff14;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+  color: #39ff14;
+  background: #000;
+}
+
+
+/*⛔নিচে হিসেব বাটন⛔*/
+.button-parentD {
+  position: relative;
+  width: 100%;
+  padding: 16px;
+  margin-top:40px; 
+  margin-bottom: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 0, 102, 0.4),
+    rgba(0, 153, 255, 0.4),
+    rgba(0, 255, 102, 0.4),
+    rgba(153, 0, 255, 0.4)
+  );
+  backdrop-filter: blur(8px);
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-parentD::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 78, 0, 0.6),
+    rgba(255, 0, 0, 0.5),
+    rgba(0, 255, 204, 0.5),
+    rgba(153, 0, 255, 0.5)
+  );
+  animation: fireWave 6s ease-in-out infinite;
+  filter: blur(12px);
+  opacity: 0.6;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+@keyframes fireWave {
+  0% { left: -100%; }
+  50% { left: 0%; }
+  100% { left: -100%; }
+}
+
+
+
+.glass-buttonD {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background-color: #222;
+  color: #fff;
+  border: 2px solid rgba(0, 255, 159, 0.3); /* হালকা সবুজ বর্ডার */
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 255, 128, 0.1); /* হালকা শ্যাডো */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+  position: relative;
+  outline: none;
+}
+
+/* ✅ ফোকাস ইফেক্ট — ইনপুটের মতো গ্লো */
+.glass-buttonD:focus {
+  border-color: #39ff14;
+  box-shadow: 0 0 8px rgba(57, 255, 20, 0.6);
+  color: #39ff14;
+  background: #000;
+}
+
+.glass-buttonD:hover {
+  background-color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transform: translateY(1px);
+}
+
+.glass-buttonD:active {
+  background-color: #111;
+  box-shadow: inset 0 1px 3px #000;
+  transform: translateY(2px);
+}
+
+.glass-buttonD::before {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 5%;
+  width: 90%;
+  height: 10px;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 0, 102, 0.2),
+    rgba(0, 153, 255, 0.2),
+    rgba(0, 255, 102, 0.2),
+    rgba(153, 0, 255, 0.2)
+  );
+  filter: blur(6px);
+  border-radius: 10px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.glass-buttonD span {
+  position: relative;
+  z-index: 2;
+  font-size: inherit;
+  font-weight: inherit;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+
+
+
+
+
+/* রেজাল্ট বক্স */
+.resultD {
+  background: #000;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  padding: 14px;
+  margin-top: 18px;
+  border: 2px solid #0f0;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+
+
+/* এরর */
+.errorD {
+  color: #f55;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 12px;
+  font-size: 14px;
+  position: relative; /* যাতে উপরে না উঠে */
+}
+
+
+/* মোবাইল রেসপন্সিভ */
+@media (max-width: 480px) {
+  .calculatorD {
+    padding: 16px;
+  }
+
+  .input-fieldD input,
+  .calculatorD button {
+    font-size: 15px;
+  }
+
+  .resultD {
+    font-size: 14px;
   }
 }
